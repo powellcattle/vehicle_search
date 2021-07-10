@@ -1,0 +1,28 @@
+{
+  "allsearches": [
+    {
+      "name": "bobby_generic",
+      "hasPic": 1,
+      "max_year": 1970,
+      "min_year": 1940,
+      "postedToday": 0,
+      "searchNearby": "None",
+      "srchType": "T",
+      "sites": [
+        "texas"
+      ]
+    },
+    {
+      "name": "rodney_special_truck",
+      "hasPic": 1,
+      "max_year": 1979,
+      "min_year": 1965,
+      "postedToday": 0,
+      "searchNearby": "None",
+      "srchType": "T",
+      "sites": [
+        "texas"
+      ]
+    }
+  ]
+}
