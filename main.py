@@ -1,9 +1,14 @@
+import sys
+
 from craigslist import craigslist
 import json
 
-f = open(".\meta-data\craigslist_searches.json")
-search_names_json = json.load(f)
-f.close()
+try:
+    f = open(".\meta-data\craigslist_searches.json")
+    search_names_json = json.load(f)
+    f.close()
+except OSError as e:
+    sys.intern(e)
 
 f = open(".\meta-data\craigsliststates.json")
 state_sites = json.load(f)
@@ -48,15 +53,18 @@ for search_name in search_names_json['allsearches']:
                             break
 
                     if not found:
-                        final_results.append({'id': result.get('id'), 'name': result.get('name'), 'url': result.get('url'), 'price': result.get('price'), 'where': result.get('where')})
+                        final_results.append(
+                            {'id': result.get('id'), 'name': result.get('name'), 'url': result.get('url'),
+                             'price': result.get('price'), 'where': result.get('where')})
                 #
 
-    f = open('C:/Users/spowe/Downloads/'+ search_name.get('name') + '.html', 'w',encoding='utf8')
+    f = open('C:/Users/spowe/Downloads/' + search_name.get('name') + '.html', 'w', encoding='utf8')
     text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;">    <thead>    <tr style="text-align: left; border-style: hidden;">        <td style="width: 50%; height: 20px;border-style: hidden;"><strong>Title</strong></td>        <td style="width: 10%; height: 20px;border-style: hidden;"><strong>Price</strong></td>        <td style="width: 20%; height: 20px;border-style: hidden;"><strong>Location</strong></td>    </tr>    </thead>    <tbody>'
 
     for row in final_results:
         text = text + '<tr style="border-style:none;"><td style="width: 50%;border-style:none;">'
-        text += '<a href="' + row.get('url') + '"title="' + row.get('name') + '" target="_blank"><span>' + row.get('name') + '</span></a></td>'
+        text += '<a href="' + row.get('url') + '"title="' + row.get('name') + '" target="_blank"><span>' + row.get(
+            'name') + '</span></a></td>'
         text += '<td style="width: 10%;border-style: none;">' + row.get('price') + '</td>'
         where = row.get('where')
         if where is None:
@@ -67,31 +75,31 @@ for search_name in search_names_json['allsearches']:
     f.write(text)
     f.close()
 
-        # for search in allsearches:
-        #     searchname = search.get('name')
-        #
-        #     cl = craigslist.CraigslistForSale(
-        #         site=site,
-        #         category='cta',
-        #         filters=filters
-        #     )
-        #
-        #     filters = {
-        #         'searchNearby': search.get('searchNearby'),
-        #         'postedToday': search.get('postedToday'),
-        #         'srchType': search.get('srchType'),
-        #         'hasPic': search.get('hasPic'),
-        #         'min_year': search.get('min_year'),
-        #         'max_year': search.get('max_year')
-        #     }
-        #
-        #     for site in search.get('sites'):
-        #         cl = craigslist.CraigslistForSale(
-        #             site=site,
-        #             category='cta',
-        #             filters=filters
-        #         )
-        #
+    # for search in allsearches:
+    #     searchname = search.get('name')
+    #
+    #     cl = craigslist.CraigslistForSale(
+    #         site=site,
+    #         category='cta',
+    #         filters=filters
+    #     )
+    #
+    #     filters = {
+    #         'searchNearby': search.get('searchNearby'),
+    #         'postedToday': search.get('postedToday'),
+    #         'srchType': search.get('srchType'),
+    #         'hasPic': search.get('hasPic'),
+    #         'min_year': search.get('min_year'),
+    #         'max_year': search.get('max_year')
+    #     }
+    #
+    #     for site in search.get('sites'):
+    #         cl = craigslist.CraigslistForSale(
+    #             site=site,
+    #             category='cta',
+    #             filters=filters
+    #         )
+    #
 
 # allsearches = [
 #     {
