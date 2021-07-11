@@ -1,7 +1,10 @@
 import sys
 
 from craigslist import craigslist
+
 import json
+
+from vehicle import CraigslistVehicle
 
 try:
     f = open(".\meta-data\craigslist_searches.json")
@@ -34,17 +37,18 @@ def write_html(results_all_typed, results_all):
 
         for vehicle in filters_dict:
             text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;">    <thead>    ' \
-                        '<tr style="text-align: left; border-style: hidden;">        <td style="width: 50%;' \
-                        ' height: 20px;border-style: hidden;"><strong>' + vehicle.upper() + '</strong></td>        ' \
-                        '<td style="width: 10%;' \
-                        ' height: 20px;border-style: hidden;"><strong>Price</strong></td>        <td style="width: 20%;' \
-                        ' height: 20px;border-style: hidden;"><strong>Location</strong></td>    </tr>    </thead>    <tbody>'
+                   '<tr style="text-align: left; border-style: hidden;">        <td style="width: 50%;' \
+                   ' height: 20px;border-style: hidden;"><strong>' + vehicle.upper() + '</strong></td>        ' \
+                                                                                       '<td style="width: 10%;' \
+                                                                                       ' height: 20px;border-style: hidden;"><strong>Price</strong></td>        <td style="width: 20%;' \
+                                                                                       ' height: 20px;border-style: hidden;"><strong>Location</strong></td>    </tr>    </thead>    <tbody>'
 
             for result in results_all_typed:
                 if result.get('vtype') == vehicle:
                     text += '<tr style="border-style:none;"><td style="width: 50%;border-style:none;">'
-                    text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '" target="_blank"><span>' \
-                    + result.get('name') + '</span></a></td>'
+                    text += '<a href="' + result.get('url') + '"title="' + result.get('name').upper() + '" ' \
+                                                                                                 'target="_blank"><span>' \
+                            + result.get('name') + '</span></a></td>'
                     text += '<td style="width: 10%;border-style: none;">' + result.get('price') + '</td>'
                     where = result.get('where')
                     if where is None:
@@ -52,19 +56,19 @@ def write_html(results_all_typed, results_all):
                     text += '<td style="width: 20%;border-style: none;"><span>' + where + '</span></td></tr>'
         return_text += text
 
-
     text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;">    <thead>    ' \
-                        '<tr style="text-align: left; border-style: hidden;">        <td style="width: 50%;' \
-                        ' height: 20px;border-style: hidden;"><strong> ALL VEHICLES</strong></td>        ' \
-                        '<td style="width: 10%;' \
-                        ' height: 20px;border-style: hidden;"><strong>Price</strong></td>        <td style="width: 20%;' \
-                        ' height: 20px;border-style: hidden;"><strong>Location</strong></td>    </tr>    </thead>    <tbody>'
+           '<tr style="text-align: left; border-style: hidden;">        <td style="width: 50%;' \
+           ' height: 20px;border-style: hidden;"><strong> ALL VEHICLES</strong></td>        ' \
+           '<td style="width: 10%;' \
+           ' height: 20px;border-style: hidden;"><strong>Price</strong></td>        <td style="width: 20%;' \
+           ' height: 20px;border-style: hidden;"><strong>Location</strong></td>    </tr>    </thead>    <tbody>'
 
     for result in results_all:
         text += '<tr style="border-style:none;"><td style="width: 50%;border-style:none;">'
         text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '" target="_blank"><span>' \
-        + result.get('name') + '</span></a></td>'
-        text += '<td style="width: 10%;border-style: none;">' + result.get('price') + '</td>'
+                + result.get('name').upper() + '</span></a></td>'
+        text += '<td style="width: 10%;border-style: none;">' + result.get(
+            'price') + '</td>'
         where = result.get('where')
         if where is None:
             where = ''
@@ -72,7 +76,7 @@ def write_html(results_all_typed, results_all):
 
     return_text += text
 
-    return(return_text)
+    return (return_text)
 
 
 def add_nonduplicate_to_results(results, final_results):
@@ -89,7 +93,8 @@ def add_nonduplicate_to_results(results, final_results):
 
         if add_to:
             final_results.append(
-                {'id': result.get('id'), 'name': result.get('name'), 'url': result.get('url'),
+                {'id': result.get('id'), 'name': result.get('name'),
+                 'url': result.get('url'),
                  'price': result.get('price'), 'where': result.get('where')})
 
     return add_to
@@ -100,10 +105,14 @@ def type_results(results_all, results_all_typed):
         for filters_dict in sort_filters_json['filters']:
             for vehicle in filters_dict:
                 for sort_for in filters_dict.get(vehicle):
-                    if result.get('name').lower().__contains__(sort_for):
-                        results_all_typed.append({'vtype': vehicle, 'id': result.get('id'), 'name': result.get('name'),
-                                                  'url': result.get('url'), 'price': result.get('price'),
-                                                  'where': result.get('where')})
+                    name = result.get('name').lower()
+                    if name.__contains__(sort_for):
+                        results_all_typed.append(
+                            {'vtype': vehicle, 'id': result.get('id'),
+                             'name': result.get('name'),
+                             'url': result.get('url'),
+                             'price': result.get('price'),
+                             'where': result.get('where')})
                         break
 
 
@@ -124,23 +133,26 @@ for search_name in search_names_json['allsearches']:
         'max_year': search_name.get('max_year')
     }
 
+    # for each search, iterate each state
     for state in search_name.get('sites'):
-
+        # for each craigslist state, iterate over all sites
         for state_sites in list_state_dict:
+            # iterate over each state site
+            try:
+                for site in state_sites.get(state):
+                    cl = CraigslistVehicle(
+                        site=site,
+                        filters=search_filter
+                    )
 
-            for site in state_sites.get(state):
-                cl = craigslist.CraigslistForSale(
-                    site=site,
-                    category='cta',
-                    filters=search_filter
-                )
-
-                craigslist_results = cl.get_results(sort_by="newest", limit=500)
-                add_nonduplicate_to_results(craigslist_results, results_all)
+                    craigslist_results = cl.get_results(sort_by="newest", limit=50)
+                    add_nonduplicate_to_results(craigslist_results, results_all)
+            except TypeError:
+                pass
 
     type_results(results_all, results_all_typed)
 
-    f = open('C:/Users/spowe/Downloads/' + search_name.get('name') + '.html', 'w', encoding='utf8')
+    f = open('C:/dev/reports/' + search_name.get('name') + '.html', 'w', encoding='utf8')
     text = write_html(results_all_typed, results_all)
     f.write(text)
     f.close()

@@ -14,7 +14,11 @@
       ]
     },
     {
-      "chevrolet": [
+      "chevrolet truck": [
+        "chevrolet pickup",
+        "chevrolet pick up",
+        "chevy pickup",
+        "chevy pick up",
         "c10",
         "c-10",
         "c 10",
@@ -37,7 +41,44 @@
       ]
     },
     {
-      "ford": [
+      "chevrolet corvette": [
+        "corvette",
+        "vette",
+        "stingray",
+        "sting ray"
+      ]
+    },
+    {
+      "chevrolet": [
+        "chevy",
+        "chevrolet",
+        "corvette",
+        "chev",
+        "c10",
+        "c-10",
+        "c 10",
+        "c20",
+        "c 20",
+        "c-20",
+        "silverado",
+        "apache",
+        "scottdale",
+        "scottsdale",
+        "cheyenne",
+        "blazer",
+        "k5",
+        "k10",
+        "k 10",
+        "k-10",
+        "k20",
+        "k-20",
+        "k 20"
+      ]
+    },
+    {
+      "ford truck": [
+        "ford pickup",
+        "ford pick up",
         "f1",
         "f-1",
         "f2",
@@ -56,7 +97,27 @@
       ]
     },
     {
-      "dodge": [
+      "ford bronco": [
+        "bronco"
+      ]
+    },
+    {
+      "ford mustang": [
+        "mustang",
+        "tang"
+      ]
+    },
+    {
+      "ford": [
+        "ford",
+        "galaxie",
+        "thunderbird",
+        "mustang",
+        "custom"
+       ]
+    },
+    {
+      "dodge truck": [
         "d1",
         "d100",
         "d200",
