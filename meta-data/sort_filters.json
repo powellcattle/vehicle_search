@@ -51,6 +51,12 @@
       ]
     },
     {
+      "chevrolet blazer": [
+        "blazer",
+        "kr"
+      ]
+    },
+    {
       "chevrolet": [
         "chevy",
         "chevrolet",
@@ -119,7 +125,7 @@
         "thunderbird",
         "mustang",
         "custom"
-       ]
+      ]
     },
     {
       "dodge truck": [
@@ -131,6 +137,11 @@
         "power wagon",
         "ram",
         "lariat"
+      ]
+    },
+    {
+      "international truck": [
+        "international"
       ]
     }
   ]

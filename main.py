@@ -1,4 +1,5 @@
 import sys
+import re
 
 from craigslist import craigslist
 
@@ -30,36 +31,42 @@ except OSError as e:
 list_state_dict = state_sites['states']
 
 
+def find_whole_word(w):
+    return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
+
+
 def write_html(results_all_typed, results_all):
     return_text = ''
 
     for filters_dict in sort_filters_json['filters']:
 
         for vehicle in filters_dict:
-            text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;"><thead>' \
+            text = '<p><table border="0" style="width: 100%; border-collapse: collapse; border-style: none;"><thead>' \
                    '<tr style="text-align: left; border-style: hidden;"><td style="width: 50%;' \
                    ' height: 20px;border-style: hidden;"><strong>' + vehicle.upper() + '</strong></td>' \
-                    '<td style="width: 10%;height: 20px;border-style: hidden;"><strong>Price</strong></td>' \
-                    '<td style="width: 20%;height: 20px;border-style: hidden;"><strong>Location</strong>' \
-                    '</td></tr></thead><tbody>'
+                                                                                       '<td style="width: 10%;height: 20px;border-style: hidden;"><strong>Price</strong></td>' \
+                                                                                       '<td style="width: 20%;height: 20px;border-style: hidden;"><strong>Location</strong>' \
+                                                                                       '</td></tr></thead><tbody>'
 
             for result in results_all_typed:
                 if result.get('vtype') == vehicle:
                     text += '<tr style="border-style:none;">'
                     text += '<td style="width:50%;border-style:none;">'
                     text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '"target="_blank">'
-                    text += '<span>' + result.get('name') + '</span>'
-                    text += '</a>'
+                    text += result.get('name')
                     text += '</td>'
-                    text += '<td style="width:10%;border-style:none;"><span>' + result.get('price') + '</span></td>'
+                    text += '<td style="width:10%;border-style:none;">' + result.get('price') + '</td>'
                     where = result.get('where')
                     if where is None:
                         where = ''
-                    text += '<td style="width: 20%;border-style: none;"><span>' + where + '</span></td>'
+                    text += '<td style="width: 20%;border-style: none;">' + where + '</td>'
                     text += '</tr>'
+            text += '</table>'
+            text += '</p>'
+
         return_text += text
 
-    text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;">    <thead>    ' \
+    text = '<p><table border="0" style="width: 100%; border-collapse: collapse; border-style: none;">    <thead>    ' \
            '<tr style="text-align: left; border-style: hidden;"><td style="width: 50%;' \
            ' height: 20px;border-style: hidden;"><strong> ALL VEHICLES</strong></td>' \
            '<td style="width: 10%;' \
@@ -69,15 +76,18 @@ def write_html(results_all_typed, results_all):
     for result in results_all:
         text += '<tr style="border-style:none;">'
         text += '<td style="width: 50%;border-style:none;">'
-        text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '"target="_blank">'
-        text += '<span>' + result.get('name') + '</span>'
-        text += '</a>'
+        text += '<a href="' + result.get('url') + '"title="' + result.get('name')
+        text += '"target="_blank">' + result.get('name')
         text += '</td>'
         text += '<td style="width: 10%;border-style: none;">' + result.get('price') + '</td>'
         where = result.get('where')
         if where is None:
             where = ''
-        text += '<td style="width: 20%;border-style: none;"><span>' + where + '</span></td></tr>'
+        text += '<td style="width: 20%;border-style: none;">' + where + '</td>'
+        text += '</tr>'
+
+    text += '</table>'
+    text += '</p>'
 
     return_text += text
 
@@ -111,7 +121,7 @@ def type_results(results_all, results_all_typed):
             for vehicle in filters_dict:
                 for sort_for in filters_dict.get(vehicle):
                     name = result.get('name').lower()
-                    if name.__contains__(sort_for):
+                    if find_whole_word(sort_for)(name):
                         results_all_typed.append(
                             {'vtype': vehicle, 'id': result.get('id'),
                              'name': result.get('name'),

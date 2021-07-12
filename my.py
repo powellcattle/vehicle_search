@@ -1,12 +1,8 @@
-import json
-import sys
-from craigslist import utils
+import re
 
-print(utils.get_all_sites())
 
-#         for state_sites in list_state_dict:
-#             for site in state_sites.get(state):
-#
-# for filter_name in sort_filters_json['filters']:
-#     print(filter_name.get('name'))
-#     final_results = list(dict())
+def findWholeWord(w):
+    return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
+
+
+print(findWholeWord('rambler')("1966 Rambler Classic 770"))
