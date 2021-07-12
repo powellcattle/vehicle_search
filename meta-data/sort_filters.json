@@ -15,8 +15,10 @@
     },
     {
       "chevrolet truck": [
+        "chevrolet truck",
         "chevrolet pickup",
         "chevrolet pick up",
+        "chevy truck",
         "chevy pickup",
         "chevy pick up",
         "c10",
@@ -77,6 +79,7 @@
     },
     {
       "ford truck": [
+        "ford truck",
         "ford pickup",
         "ford pick up",
         "f1",
@@ -84,6 +87,8 @@
         "f2",
         "f3",
         "f-3",
+        "f6",
+        "f-6",
         "f100",
         "f-100",
         "f150",
