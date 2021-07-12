@@ -36,39 +36,44 @@ def write_html(results_all_typed, results_all):
     for filters_dict in sort_filters_json['filters']:
 
         for vehicle in filters_dict:
-            text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;">    <thead>    ' \
-                   '<tr style="text-align: left; border-style: hidden;">        <td style="width: 50%;' \
-                   ' height: 20px;border-style: hidden;"><strong>' + vehicle.upper() + '</strong></td>        ' \
-                                                                                       '<td style="width: 10%;' \
-                                                                                       ' height: 20px;border-style: hidden;"><strong>Price</strong></td>        <td style="width: 20%;' \
-                                                                                       ' height: 20px;border-style: hidden;"><strong>Location</strong></td>    </tr>    </thead>    <tbody>'
+            text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;"><thead>' \
+                   '<tr style="text-align: left; border-style: hidden;"><td style="width: 50%;' \
+                   ' height: 20px;border-style: hidden;"><strong>' + vehicle.upper() + '</strong></td>' \
+                    '<td style="width: 10%;height: 20px;border-style: hidden;"><strong>Price</strong></td>' \
+                    '<td style="width: 20%;height: 20px;border-style: hidden;"><strong>Location</strong>' \
+                    '</td></tr></thead><tbody>'
 
             for result in results_all_typed:
                 if result.get('vtype') == vehicle:
-                    text += '<tr style="border-style:none;"><td style="width: 50%;border-style:none;">'
-                    text += '<a href="' + result.get('url') + '"title="' + result.get('name').upper() + '" ' \
-                                                                                                 'target="_blank"><span>' \
-                            + result.get('name') + '</span></a></td>'
-                    text += '<td style="width: 10%;border-style: none;">' + result.get('price') + '</td>'
+                    text += '<tr style="border-style:none;">'
+                    text += '<td style="width:50%;border-style:none;">'
+                    text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '"target="_blank">'
+                    text += '<span>' + result.get('name') + '</span>'
+                    text += '</a>'
+                    text += '</td>'
+                    text += '<td style="width:10%;border-style:none;"><span>' + result.get('price') + '</span></td>'
                     where = result.get('where')
                     if where is None:
                         where = ''
-                    text += '<td style="width: 20%;border-style: none;"><span>' + where + '</span></td></tr>'
+                    text += '<td style="width: 20%;border-style: none;"><span>' + where + '</span></td>'
+                    text += '</tr>'
         return_text += text
 
     text = '<table border="0" style="width: 100%; border-collapse: collapse; border-style: none;">    <thead>    ' \
-           '<tr style="text-align: left; border-style: hidden;">        <td style="width: 50%;' \
-           ' height: 20px;border-style: hidden;"><strong> ALL VEHICLES</strong></td>        ' \
+           '<tr style="text-align: left; border-style: hidden;"><td style="width: 50%;' \
+           ' height: 20px;border-style: hidden;"><strong> ALL VEHICLES</strong></td>' \
            '<td style="width: 10%;' \
-           ' height: 20px;border-style: hidden;"><strong>Price</strong></td>        <td style="width: 20%;' \
-           ' height: 20px;border-style: hidden;"><strong>Location</strong></td>    </tr>    </thead>    <tbody>'
+           ' height: 20px;border-style: hidden;"><strong>Price</strong></td> <td style="width: 20%;' \
+           ' height: 20px;border-style: hidden;"><strong>Location</strong></td></tr> </thead><tbody>'
 
     for result in results_all:
-        text += '<tr style="border-style:none;"><td style="width: 50%;border-style:none;">'
-        text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '" target="_blank"><span>' \
-                + result.get('name').upper() + '</span></a></td>'
-        text += '<td style="width: 10%;border-style: none;">' + result.get(
-            'price') + '</td>'
+        text += '<tr style="border-style:none;">'
+        text += '<td style="width: 50%;border-style:none;">'
+        text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '"target="_blank">'
+        text += '<span>' + result.get('name') + '</span>'
+        text += '</a>'
+        text += '</td>'
+        text += '<td style="width: 10%;border-style: none;">' + result.get('price') + '</td>'
         where = result.get('where')
         if where is None:
             where = ''
