@@ -53,7 +53,8 @@
     {
       "chevrolet blazer": [
         "blazer",
-        "kr"
+        "k5",
+        "k-5"
       ]
     },
     {
@@ -75,12 +76,19 @@
         "cheyenne",
         "blazer",
         "k5",
+        "k-5",
         "k10",
         "k 10",
         "k-10",
         "k20",
         "k-20",
-        "k 20"
+        "k 20",
+        "nova",
+        "impala",
+        "el camino",
+        "biscayne",
+        "corvair",
+        "malibu"
       ]
     },
     {
@@ -124,7 +132,9 @@
         "galaxie",
         "thunderbird",
         "mustang",
-        "custom"
+        "galaxie",
+        "ranchero",
+        "cobra"
       ]
     },
     {
