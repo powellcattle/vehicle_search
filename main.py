@@ -1,9 +1,6 @@
-import sys
-import re
-
-from craigslist import craigslist
-
 import json
+import re
+import sys
 
 from vehicle import CraigslistVehicle
 
@@ -29,7 +26,7 @@ except OSError as e:
     sys.intern(e)
 
 list_state_dict = state_sites['states']
-SEARCH_LIMIT = 50
+SEARCH_LIMIT = 100
 
 
 def find_whole_word(w):
@@ -44,10 +41,7 @@ def write_html(results_all_typed, results_all):
         for vehicle in filters_dict:
             text = '<p><table border="0" style="width: 100%; border-collapse: collapse; border-style: none;"><thead>'
             text += '<tr style="text-align: left; border-style: hidden;">'
-            # text += '<td style="width:10%;height: 20px;border-style: hidden;"><strong>Price</strong></td>'
             text += '<td style="width:10%;height:20px;border-style:hidden;"><strong>' + vehicle.upper() + '</strong>'
-            text += '</td>'
-            text += '<td style="width:10%;height: 20px;border-style: hidden;"><strong>Location</strong>'
             text += '</td>'
             text += '</tr></thead><tbody>'
 
@@ -59,11 +53,6 @@ def write_html(results_all_typed, results_all):
                     text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '"target="_blank">'
                     text += '[' + result.get('price') + ']  ' + result.get('name') + '</a>'
                     text += '</td>'
-
-                    where = result.get('where')
-                    if where is None:
-                        where = ''
-                    text += '<td style="10%:auto;border-style:none;">' + where + '</td>'
                     text += '</tr>'
             text += '</table>'
             text += '</p>'
@@ -72,10 +61,7 @@ def write_html(results_all_typed, results_all):
 
     text = '<p><table border="0" style="width: 100%; border-collapse: collapse; border-style: none;"><thead>'
     text += '<tr style="text-align: left; border-style: hidden;">'
-    # text += '<td style="width:10%;height: 20px;border-style: hidden;"><strong>Price</strong></td>'
     text += '<td style="width:10%;height:20px;border-style:hidden;"><strong>ALL VEHICLES</strong>'
-    text += '</td>'
-    text += '<td style="width:10%;height: 20px;border-style: hidden;"><strong>Location</strong>'
     text += '</td>'
     text += '</tr></thead><tbody>'
 

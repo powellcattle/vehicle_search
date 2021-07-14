@@ -1,0 +1,275 @@
+[
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "WebSite",
+    "name": "Classics at Autotrader",
+    "alternateName": "Classics at Autotrader",
+    "url": "https:\/\/classics.autotrader.com\/"
+  },
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Chevrolet",
+        "item": "https:\/\/classics.autotrader.com\/classic-cars-for-sale\/chevrolet-for-sale"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blazer",
+        "item": "https:\/\/classics.autotrader.com\/classic-cars-for-sale\/chevrolet-blazer-for-sale"
+      }
+    ]
+  },
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "Car",
+    "name": "1977 Chevrolet Blazer",
+    "description": "1977 CHEVROLET BLAZER",
+    "image": "https:\/\/0.cdn.autotraderspecialty.com\/Car-101549995-a43313516e19f5aa90cdb4315c789338.jpg?w=800&h=800&r=fit",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https:\/\/schema.org\/InStock",
+      "price": 9900,
+      "priceCurrency": "USD",
+      "seller": {
+        "@type": "AutoDealer",
+        "name": "SCA Auctions",
+        "telephone": "(786) 655-8855",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "North Miami Beach",
+          "addressRegion": "FL",
+          "postalCode": "33162",
+          "streetAddress": "15173 B NE 21ST Ave "
+        },
+        "image": "https:\/\/0.cdn.autotraderspecialty.com\/sca_auctions_1-classic--Dealer-11701-0500e44ae5d7f303eb65d64290b9069e.jpg?w=400&h=400&r=fit"
+      },
+      "url": "https:\/\/classics.autotrader.com\/classic-cars\/1977\/chevrolet\/blazer\/101549995"
+    },
+    "color": "BLACK",
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "brand": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "model": "Blazer",
+    "vehicleModelDate": 1977,
+    "mileageFromOdometer": {
+      "@type": "QuantitativeValue",
+      "unitCode": "SMI",
+      "value": 82653
+    }
+  },
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "Car",
+    "name": "1977 Chevrolet Blazer",
+    "description": "1977 chevy blazer 2wd clean interior vintage air 350 700r4 4\/6 drop kit super clean ride  Please Note The Following  Vehicle Location is at our clients home and Not In Cadillac, Michigan.  We do have a showroom with about 25 cars that is by appoin...",
+    "image": "https:\/\/1.cdn.autotraderspecialty.com\/Car-101459221-413cdb4ebdc77f89d97d99fead85cb64.jpg?w=800&h=800&r=fit",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https:\/\/schema.org\/InStock",
+      "price": 30995,
+      "priceCurrency": "USD",
+      "seller": {
+        "@type": "AutoDealer",
+        "name": "Classic Car Deals",
+        "telephone": "(844) 676-0714",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Cadillac",
+          "addressRegion": "MI",
+          "postalCode": "49601",
+          "streetAddress": "6576 E 34 road "
+        },
+        "image": "https:\/\/0.cdn.autotraderspecialty.com\/classic_car_deals-classic--Dealer-2612-a99c8baeb499a9aaee589cbf106b8ac6.jpg?w=400&h=400&r=fit"
+      },
+      "url": "https:\/\/classics.autotrader.com\/classic-cars\/1977\/chevrolet\/blazer\/101459221"
+    },
+    "vehicleEngine": "350",
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "brand": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "model": "Blazer",
+    "vehicleModelDate": 1977,
+    "mileageFromOdometer": {
+      "@type": "QuantitativeValue",
+      "unitCode": "SMI",
+      "value": 100000
+    }
+  },
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "Car",
+    "name": "1977 Chevrolet Blazer",
+    "description": "1977 Chevy Blazer, Original 2wd  Rotisserie restoration\/customization. Every nut and bolt removed and either replaced with stainless or grade 8 hardware where applicable. Chassis was powder-coated and so were all suspension items attached. When di...",
+    "image": "https:\/\/0.cdn.autotraderspecialty.com\/Car-101411013-05068bf4600ae008aa7bf7ca224b6db0.jpg?w=800&h=800&r=fit",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https:\/\/schema.org\/InStock",
+      "price": 82995,
+      "priceCurrency": "USD",
+      "seller": {
+        "@type": "AutoDealer",
+        "name": "Classic Car Deals",
+        "telephone": "(844) 676-0714",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Cadillac",
+          "addressRegion": "MI",
+          "postalCode": "49601",
+          "streetAddress": "6576 E 34 road "
+        },
+        "image": "https:\/\/0.cdn.autotraderspecialty.com\/classic_car_deals-classic--Dealer-2612-a99c8baeb499a9aaee589cbf106b8ac6.jpg?w=400&h=400&r=fit"
+      },
+      "url": "https:\/\/classics.autotrader.com\/classic-cars\/1977\/chevrolet\/blazer\/101411013"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "brand": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "model": "Blazer",
+    "vehicleModelDate": 1977,
+    "mileageFromOdometer": {
+      "@type": "QuantitativeValue",
+      "unitCode": "SMI",
+      "value": 10123
+    }
+  },
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "Car",
+    "name": "1977 Chevrolet Blazer",
+    "description": "Worldwide Vintage Autos is one of the largest classic automobile consignment dealerships in the world. With over 200 vehicles in stock spanning over 80,000 square feet, we have what you are looking for! We provide top tier service for both online ...",
+    "image": "https:\/\/1.cdn.autotraderspecialty.com\/Car-101499464-7b23fbc9d60cdcfc9d200e1eb9d42265.jpg?w=800&h=800&r=fit",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https:\/\/schema.org\/InStock",
+      "price": 33900,
+      "priceCurrency": "USD",
+      "seller": {
+        "@type": "AutoDealer",
+        "name": "Worldwide Vintage Autos",
+        "telephone": "(844) 799-9685",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Denver",
+          "addressRegion": "CO",
+          "postalCode": "80216",
+          "streetAddress": "4001 Forest ST "
+        },
+        "image": "https:\/\/0.cdn.autotraderspecialty.com\/worldwide_vintage_autos-classic--Dealer-492-c3a7c1f22508cf18097554df4b3ad3be.jpg?w=400&h=400&r=fit"
+      },
+      "url": "https:\/\/classics.autotrader.com\/classic-cars\/1977\/chevrolet\/blazer\/101499464"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "brand": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "model": "Blazer",
+    "vehicleModelDate": 1977,
+    "mileageFromOdometer": {
+      "@type": "QuantitativeValue",
+      "unitCode": "SMI",
+      "value": 2853
+    }
+  },
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "Car",
+    "name": "1976 Chevrolet Blazer",
+    "description": null,
+    "image": "https:\/\/1.cdn.autotraderspecialty.com\/Car-101459049-2eb489cf65d963f48e5d11a03513fc39.jpg?w=800&h=800&r=fit",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https:\/\/schema.org\/InStock",
+      "seller": {
+        "@type": "AutoDealer",
+        "name": "Desert Valley Auto Parts",
+        "telephone": "(866) 942-2821",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Phoenix",
+          "addressRegion": "AZ",
+          "postalCode": "85027",
+          "streetAddress": "22213 N 21st Ave "
+        },
+        "image": "https:\/\/0.cdn.autotraderspecialty.com\/desert_valley_auto_parts-classic--Dealer-233-479b9447cc8bec3a28351db933ef99bc.jpg?w=400&h=400&r=fit"
+      },
+      "url": "https:\/\/classics.autotrader.com\/classic-cars\/1976\/chevrolet\/blazer\/101459049"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "brand": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "model": "Blazer",
+    "vehicleModelDate": 1976
+  },
+  {
+    "@context": "https:\/\/schema.org",
+    "@type": "Car",
+    "name": "1976 Chevrolet Blazer",
+    "description": "1976 CHEVROLET K-5 BLAZER4X4350 C.I. ENGINE - FRESH CRATE ENGINEAUTOMATIC TRANSVERY NICE BRICK RED PAINTSUPER CLEAN ORIGINAL FLOORS AND BODYVERY STRAIGHT BODY PANELS AND GAP ALIGNMENTREMOVABLE WHITE HARD TOPPOWER BRAKESPOWER STEERINGDUAL EXHAUST",
+    "image": "https:\/\/0.cdn.autotraderspecialty.com\/Car-101507007-36f4df48fb4649c909ec29da6057c03e.jpg?w=800&h=800&r=fit",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https:\/\/schema.org\/InStock",
+      "price": 34900,
+      "priceCurrency": "USD",
+      "seller": {
+        "@type": "AutoDealer",
+        "name": "North Shore Classics",
+        "telephone": "(888) 312-5203",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Mundelein",
+          "addressRegion": "IL",
+          "postalCode": "60060",
+          "streetAddress": "149 North Seymour Ave "
+        },
+        "image": "https:\/\/0.cdn.autotraderspecialty.com\/north_shore_classics-classic--Dealer-1462-18701f132ccb841965c2a8132f599059.png?w=400&h=400&r=fit"
+      },
+      "url": "https:\/\/classics.autotrader.com\/classic-cars\/1976\/chevrolet\/blazer\/101507007"
+    },
+    "color": "Brick Red",
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "brand": {
+      "@type": "Organization",
+      "name": "Chevrolet"
+    },
+    "model": "Blazer",
+    "vehicleModelDate": 1976,
+    "mileageFromOdometer": {
+      "@type": "QuantitativeValue",
+      "unitCode": "SMI",
+      "value": 78770
+    }
+  }
+]
