@@ -8,27 +8,28 @@ from urllib.error import URLError
 from vehicle import CraigslistVehicle
 
 try:
-    f = open(".\meta-data\craigslist_searches.json")
+    f = open("./meta-data/craigslist_searches.json")
     search_names_json = json.load(f)
     f.close()
 except OSError as e:
     sys.intern(e)
 
 try:
-    f = open(".\meta-data\sort_filters.json")
+    f = open("./meta-data/sort_filters.json")
     sort_filters_json = json.load(f)
     f.close()
 except OSError as e:
     sys.intern(e)
 
+stateSites = []
 try:
-    f = open(".\meta-data\craigsliststates.json")
-    state_sites = json.load(f)
+    f = open("./meta-data/craigsliststates.json")
+    stateSites = json.load(f)
     f.close()
 except OSError as e:
     sys.intern(e)
 
-list_state_dict = state_sites['states']
+list_state_dict = stateSites['states']
 SEARCH_LIMIT = 100
 
 
@@ -75,11 +76,6 @@ def write_html(results_all_typed, results_all):
         text += '<a href="' + result.get('url') + '"title="' + result.get('name') + '"target="_blank">'
         text += '[' + result.get('price') + ']  ' + result.get('name') + '</a>'
         text += '</td>'
-
-        where = result.get('where')
-        if where is None:
-            where = ''
-        text += '<td style="10%:auto;border-style:none;">' + where + '</td>'
         text += '</tr>'
 
     text += '</table>'
@@ -105,7 +101,7 @@ def add_nonduplicate_to_results(results, final_results):
             final_results.append(
                 {'id': result.get('id'), 'name': result.get('name'),
                  'url': result.get('url'),
-                 'price': result.get('price'), 'where': result.get('where')})
+                 'price': result.get('price')})
 
     return add_to
 
@@ -121,13 +117,15 @@ def type_results(results_all, results_all_typed):
                             {'vtype': vehicle, 'id': result.get('id'),
                              'name': result.get('name'),
                              'url': result.get('url'),
-                             'price': result.get('price'),
-                             'where': result.get('where')})
+                             'price': result.get('price')})
                         break
 
 
 if __name__ == '__main__':
     logging.getLogger('craigslist').setLevel(logging.DEBUG)
+
+if search_names_json is None:
+    sys.exit((-1))
 
 for search_name in search_names_json['allsearches']:
 
@@ -161,14 +159,18 @@ for search_name in search_names_json['allsearches']:
 
                         craigslist_results = cl.get_results(sort_by="newest", limit=SEARCH_LIMIT)
                         add_nonduplicate_to_results(craigslist_results, results_all)
+
                 except TypeError:
                     pass
 
         type_results(results_all, results_all_typed)
+
     except HTTPError as e:
         print(e)
     except URLError as e:
         print(e)
+
+# Append Class Auto Trader to CraigsList
 
     try:
 
