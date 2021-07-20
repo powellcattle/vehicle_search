@@ -1,6 +1,9 @@
 import json
+import logging
 import re
 import sys
+from urllib.error import HTTPError
+from urllib.error import URLError
 
 from vehicle import CraigslistVehicle
 
@@ -123,6 +126,9 @@ def type_results(results_all, results_all_typed):
                         break
 
 
+if __name__ == '__main__':
+    logging.getLogger('craigslist').setLevel(logging.DEBUG)
+
 for search_name in search_names_json['allsearches']:
 
     results_all = list(dict())
@@ -141,25 +147,35 @@ for search_name in search_names_json['allsearches']:
     }
 
     # for each search, iterate each state
-    for state in search_name.get('sites'):
-        # for each craigslist state, iterate over all sites
-        for state_sites in list_state_dict:
-            # iterate over each state site
-            try:
-                for site in state_sites.get(state):
-                    cl = CraigslistVehicle(
-                        site=site,
-                        filters=search_filter
-                    )
+    try:
+        for state in search_name.get('sites'):
+            # for each craigslist state, iterate over all sites
+            for state_sites in list_state_dict:
+                # iterate over each state site
+                try:
+                    for site in state_sites.get(state):
+                        cl = CraigslistVehicle(
+                            site=site,
+                            filters=search_filter
+                        )
 
-                    craigslist_results = cl.get_results(sort_by="newest", limit=SEARCH_LIMIT)
-                    add_nonduplicate_to_results(craigslist_results, results_all)
-            except TypeError:
-                pass
+                        craigslist_results = cl.get_results(sort_by="newest", limit=SEARCH_LIMIT)
+                        add_nonduplicate_to_results(craigslist_results, results_all)
+                except TypeError:
+                    pass
 
-    type_results(results_all, results_all_typed)
+        type_results(results_all, results_all_typed)
+    except HTTPError as e:
+        print(e)
+    except URLError as e:
+        print(e)
 
-    f = open('C:/dev/reports/' + search_name.get('name') + '.html', 'w', encoding='utf8')
-    text = write_html(results_all_typed, results_all)
-    f.write(text)
-    f.close()
+    try:
+
+        f = open('C:/dev/reports/' + search_name.get('name') + '.html', 'w', encoding='utf8')
+        text = write_html(results_all_typed, results_all)
+        f.write(text)
+        f.close()
+
+    except OSError as e:
+        print(e)
