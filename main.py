@@ -3,12 +3,13 @@ import sys
 
 from utils.helper import write_html, search_craigslist, search_autotrader
 
+search_names_json = dict()
 try:
     f = open("./meta-data/site_searches.json")
     search_names_json = json.load(f)
     f.close()
 except OSError as e:
-    sys.intern(e)
+    sys.intern(e.strerror)
 
 if search_names_json is None:
     sys.exit((-1))

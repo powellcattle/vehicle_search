@@ -33,9 +33,8 @@ def find_whole_word(w):
 
 
 def add_nonduplicate_to_results(results, final_results):
-    add_to = True
-
     for result in results:
+        add_to = True
         id = result.get('id')
         name = result.get('name')
 
@@ -46,25 +45,36 @@ def add_nonduplicate_to_results(results, final_results):
 
         if add_to:
             final_results.append(
-                {'id': result.get('id'), 'name': result.get('name'),
-                 'url': result.get('url'),
-                 'price': result.get('price')})
+                {
+                    'id': result.get('id'),
+                    'name': result.get('name'),
+                    'url': result.get('url'),
+                    'price': result.get('price')
+                }
+            )
 
-    return add_to
+    return
 
 
 def type_results(results_all, results_all_typed):
-    for result in results_all:
+    # iterate over all listing results
+    for listing in results_all:
+        # find all the dictionary with all the groups
         for filters_dict in sort_filters_json['filters']:
-            for vehicle in filters_dict:
-                for sort_for in filters_dict.get(vehicle):
-                    name = result.get('name').lower()
-                    if find_whole_word(sort_for)(name):
+            # iterate over all the sorting groups
+            for vehicle_group in filters_dict:
+                # look at each alias for a given group
+                for alias in filters_dict.get(vehicle_group):
+                    listing_title = listing.get('name')
+                    if find_whole_word(alias)(listing_title):
                         results_all_typed.append(
-                            {'vtype': vehicle, 'id': result.get('id'),
-                             'name': result.get('name'),
-                             'url': result.get('url'),
-                             'price': result.get('price')})
+                            {'vtype': vehicle_group,
+                             'id': listing.get('id'),
+                             'name': listing.get('name'),
+                             'url': listing.get('url'),
+                             'price': listing.get('price')
+                             }
+                        )
                         break
 
 
@@ -130,20 +140,20 @@ def search_craigslist(search_name, results_all, results_all_typed):
         'max_year': search_name.get('max_year')
     }
 
-    # for each search, iterate each state
     try:
+        # for each search, iterate each state
         for state in search_name.get('sites'):
-            # for each craigslist state, iterate over all sites
+            # for each craigslist state, iterate over all the craigslist sites
             for state_sites in list_state_dict:
-                # iterate over each state site
+                # build a search request for the site
                 try:
                     for site in state_sites.get(state):
-                        cl = CraigslistVehicle(
+                        clv = CraigslistVehicle(
                             site=site,
                             filters=search_filter
                         )
 
-                        craigslist_results = cl.get_results(sort_by="newest", limit=SEARCH_LIMIT)
+                        craigslist_results = clv.get_results(sort_by="newest", limit=SEARCH_LIMIT)
                         add_nonduplicate_to_results(craigslist_results, results_all)
 
                 except TypeError:
@@ -160,7 +170,9 @@ def search_craigslist(search_name, results_all, results_all_typed):
 
 
 def search_autotrader(search_name, results_all, results_all_typed):
-    html = urlopen('https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?year_from=1940&year_to=1970&price_to=20000&seller_type=seller&limit=500&order=created+desc&distance=nationwide')
+    html = urlopen(
+        'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?year_from=1940&year_to=1970'
+        '&price_from=1000&price_to=30000&limit=500&order=created+desc&distance=nationwide')
 
     try:
         bs = BeautifulSoup(html, 'html.parser')
