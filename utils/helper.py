@@ -17,6 +17,7 @@ OODLE_URL_START = 'https://cars.oodle.com'
 OODLE_URL_END  = '/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet/make_ford' \
                '/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup'
 oodle_pattern = re.compile('\sfor\s\$')
+pager_pattern = re.compile('of\s')
 
 stateSites = []
 try:
@@ -240,14 +241,25 @@ def search_oodle(search_name, results_all, results_all_typed):
     distance = search_name.get('distance')
     counter = 0
 
+    html = OODLE_URL_START + year_search + OODLE_URL_END + price_search +'?' + order + '&' + distance
+    html = urlopen(html)
+    bs = BeautifulSoup(html, 'html.parser')
+    pager = bs.find('span', {'id': 'pager'}).getText()
+    x = pager_pattern.search(pager)
+    total_found = int(pager[x.regs[0][1]:len(pager) - 1])
+    total_pages = int(total_found/15)
+    if total_pages >= search_name['pages'] :
+        total_pages = search_name['pages']
+
+
     try:
-        for i in range(search_name['pages']):
+        for i in range(total_pages):
             html = OODLE_URL_START + year_search + OODLE_URL_END + price_search
             if i == 0 :
                 html += '?' + order + '&' + distance
             else:
                 html += '?' + page_listing[i] + '&' + order + '&' + distance
-
+            print(html)
             html = urlopen(html)
             bs = BeautifulSoup(html, 'html.parser')
 
