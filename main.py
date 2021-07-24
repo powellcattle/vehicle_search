@@ -1,7 +1,7 @@
 import json
 import sys
 
-from utils.helper import write_html, search_craigslist, search_autotrader
+from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader
 
 search_names_json = dict()
 try:
@@ -11,16 +11,8 @@ try:
 except OSError as e:
     sys.intern(e.strerror)
 
-# for search_list in search_names_json:
-#     search_name = search_list[0].get("search_name")
-#     for i in range(1, len(search_list)):
-#         site_site = search_list[i][0]
-#         site_site.get("search_site")
-#         pass
-
 if search_names_json is None:
     sys.exit((-1))
-
 
 for search_list in search_names_json:
 
@@ -36,6 +28,8 @@ for search_list in search_names_json:
             search_craigslist(site, results_all, results_all_typed)
         elif search_type == 'autotrader':
             search_autotrader(site, results_all, results_all_typed)
+        elif search_type == 'oodle':
+            search_oodle(site, results_all, results_all_typed)
         else:
             continue
 
