@@ -1,6 +1,7 @@
 import re
 import json
 import sys
+import urllib
 from urllib.error import HTTPError
 from urllib.error import URLError
 from urllib.request import urlopen
@@ -8,6 +9,8 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 from utils.vehicle import CraigslistVehicle
+
+AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
 
 stateSites = []
 try:
@@ -170,11 +173,22 @@ def search_craigslist(search_name, results_all, results_all_typed):
 
 
 def search_autotrader(search_name, results_all, results_all_typed):
-    html = urlopen(
-        'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?year_from=1940&year_to=1970'
-        '&price_from=1000&price_to=30000&limit=500&order=created+desc&distance=nationwide')
+    # html = urlopen(
+    #     'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?year_from=1940&year_to=1970'
+    #     '&price_from=1000&price_to=30000&limit=500&order=created+desc&distance=nationwide')
+    search_filter = {
+        'year_from': search_name.get('year_from'),
+        'year_to': search_name.get('year_to'),
+        'price_from': search_name.get('price_from'),
+        'price_to': search_name.get('price_to'),
+        'limit': search_name.get('limit'),
+        'order': search_name.get('order'),
+        'distance': search_name.get('distance')
+    }
 
     try:
+        html = AUTOTRADER_BASE_URL + urllib.parse.urlencode(search_filter)
+        html = urlopen(html)
         bs = BeautifulSoup(html, 'html.parser')
         detail_list = bs.find_all('div', {'class': 'details'})
         counter = 0

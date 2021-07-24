@@ -68,13 +68,13 @@
     [
       {
         "search_site": "autotrader",
-        "year_to": 1949,
         "year_from": 1940,
-        "price_to": 20000,
-        "seller_type": "seller",
+        "year_to": 1949,
+        "price_from": 1000,
+        "price_to": 30000,
         "limit": 100,
         "order": "created desc",
-        "distance": "nationside"
+        "distance": "nationwide"
       }
     ]
   ],
@@ -147,13 +147,13 @@
     [
       {
         "search_site": "autotrader",
-        "year_to": 1959,
         "year_from": 1950,
-        "price_to": 20000,
-        "seller_type": "seller",
+        "year_to": 1959,
+        "price_from": 1000,
+        "price_to": 30000,
         "limit": 100,
         "order": "created desc",
-        "distance": "nationside"
+        "distance": "nationwide"
       }
     ]
   ],
@@ -226,13 +226,13 @@
     [
       {
         "search_site": "autotrader",
-        "year_to": 1970,
         "year_from": 1960,
-        "price_to": 20000,
-        "seller_type": "seller",
+        "year_to": 1970,
+        "price_from": 1000,
+        "price_to": 30000,
         "limit": 100,
         "order": "created desc",
-        "distance": "nationside"
+        "distance": "nationwide"
       }
     ]
   ]

@@ -21,11 +21,13 @@ except OSError as e:
 if search_names_json is None:
     sys.exit((-1))
 
-results_all = list(dict())
-results_all_typed = list(dict())
 
 for search_list in search_names_json:
+
     name = search_list[0].get("search_name")
+    results_all = list(dict())
+    results_all_typed = list(dict())
+
     for i in range(1, len(search_list)):
         site = search_list[i][0]
         search_type = site.get("search_site")
