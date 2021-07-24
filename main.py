@@ -33,8 +33,7 @@ for search_list in search_names_json:
         search_type = site.get("search_site")
 
         if search_type == 'craigslist':
-            # search_craigslist(site, results_all, results_all_typed)
-            pass
+            search_craigslist(site, results_all, results_all_typed)
         elif search_type == 'autotrader':
             search_autotrader(site, results_all, results_all_typed)
         else:
