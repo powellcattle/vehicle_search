@@ -140,7 +140,9 @@ def search_craigslist(search_name, results_all, results_all_typed):
         'srchType': search_name.get('srchType'),
         'hasPic': search_name.get('hasPic'),
         'min_year': search_name.get('min_year'),
-        'max_year': search_name.get('max_year')
+        'max_year': search_name.get('max_year'),
+        'min_price': search_name.get('min_price'),
+        'max_price': search_name.get('max_price')
     }
 
     try:
