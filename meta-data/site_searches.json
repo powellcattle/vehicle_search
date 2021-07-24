@@ -87,7 +87,7 @@
         "price_to": 20000,
         "order": "s=date",
         "distance": "r=country",
-        "pages": 5
+        "pages": 3
       }
     ]
   ],
@@ -179,7 +179,7 @@
         "price_to": 20000,
         "order": "s=date",
         "distance": "r=country",
-        "pages": 5
+        "pages": 3
       }
     ]
   ],
@@ -271,7 +271,7 @@
         "price_to": 20000,
         "order": "s=date",
         "distance": "r=country",
-        "pages": 5
+        "pages": 3
       }
     ]
   ]
