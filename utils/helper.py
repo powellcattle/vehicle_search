@@ -10,7 +10,8 @@ from bs4 import BeautifulSoup
 
 from utils.vehicle import CraigslistVehicle
 
-AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
+AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale?'
+AUTOTRADER_BASE_TRUCKSONLY_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
 
 stateSites = []
 try:
@@ -175,9 +176,6 @@ def search_craigslist(search_name, results_all, results_all_typed):
 
 
 def search_autotrader(search_name, results_all, results_all_typed):
-    # html = urlopen(
-    #     'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?year_from=1940&year_to=1970'
-    #     '&price_from=1000&price_to=30000&limit=500&order=created+desc&distance=nationwide')
     search_filter = {
         'year_from': search_name.get('year_from'),
         'year_to': search_name.get('year_to'),
@@ -189,7 +187,11 @@ def search_autotrader(search_name, results_all, results_all_typed):
     }
 
     try:
-        html = AUTOTRADER_BASE_URL + urllib.parse.urlencode(search_filter)
+        if search_name.get('trucks only') is True:
+            html = AUTOTRADER_BASE_TRUCKSONLY_URL + urllib.parse.urlencode(search_filter)
+        else:
+            html = AUTOTRADER_BASE_URL + urllib.parse.urlencode(search_filter)
+
         html = urlopen(html)
         bs = BeautifulSoup(html, 'html.parser')
         detail_list = bs.find_all('div', {'class': 'details'})

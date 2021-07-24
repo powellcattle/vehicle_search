@@ -74,7 +74,8 @@
         "price_to": 30000,
         "limit": 100,
         "order": "created desc",
-        "distance": "nationwide"
+        "distance": "nationwide",
+        "trucks only": true
       }
     ]
   ],
@@ -153,7 +154,8 @@
         "price_to": 30000,
         "limit": 100,
         "order": "created desc",
-        "distance": "nationwide"
+        "distance": "nationwide",
+        "trucks only": true
       }
     ]
   ],
@@ -232,7 +234,8 @@
         "price_to": 30000,
         "limit": 100,
         "order": "created desc",
-        "distance": "nationwide"
+        "distance": "nationwide",
+        "trucks only": true
       }
     ]
   ]
