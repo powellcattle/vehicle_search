@@ -1,5 +1,5 @@
-import re
 import json
+import re
 import sys
 import urllib
 from urllib.error import HTTPError
