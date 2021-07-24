@@ -13,8 +13,9 @@ from utils.vehicle import CraigslistVehicle
 
 AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale?'
 AUTOTRADER_BASE_TRUCKSONLY_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
-OODLE_URL = 'https://cars.oodle.com/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet' \
-            '/make_ford/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup/'
+OODLE_URL_START = 'https://cars.oodle.com'
+OODLE_URL_END  = '/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet/make_ford' \
+               '/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup'
 oodle_pattern = re.compile('\sfor\s\$')
 
 stateSites = []
@@ -232,41 +233,41 @@ def search_autotrader(search_name, results_all, results_all_typed):
 
 
 def search_oodle(search_name, results_all, results_all_typed):
-    search_filter = {
-        'year_from': search_name.get('year_from'),
-        'year_to': search_name.get('year_to'),
-        'price_from': search_name.get('price_from'),
-        'price_to': search_name.get('price_to'),
-        'order': search_name.get('order'),
-        'distance': search_name.get('distance')
-    }
-    year_search = '/' + str(search_filter['year_from']) + '_' + str(search_filter['year_from']) + '-multiple-multiple'
-    price_search = '/' + 'price_' + str(search_filter['price_from']) + '_' + str(search_filter['price_to'])
+    page_listing = [None,'o=15','o=30', 'o=45','o=60','o=75']
+    year_search = '/' + str(search_name['year_from']) + '_' + str(search_name['year_to']) + '-multiple-multiple'
+    price_search = '/' + 'price_' + str(search_name['price_from']) + '_' + str(search_name['price_to'])
+    order = search_name.get('order')
+    distance = search_name.get('distance')
+    counter = 0
 
     try:
+        for i in range(search_name['pages']):
+            html = OODLE_URL_START + year_search + OODLE_URL_END + price_search
+            if i == 0 :
+                html += '?' + order + '&' + distance
+            else:
+                html += '?' + page_listing[i] + '&' + order + '&' + distance
 
-        html = OODLE_URL + year_search + price_search + '?' + urllib.parse.urlencode(search_filter)
-        html = urlopen(html)
-        bs = BeautifulSoup(html, 'html.parser')
-        counter = 0
+            html = urlopen(html)
+            bs = BeautifulSoup(html, 'html.parser')
 
-        detail_list = bs.find_all('div', {'class': 'action-wrapper'})
-        for detail in detail_list:
-            for content in detail.contents:
-                if type(content) == bs4.element.Tag:
-                    counter += 1
-                    tag = content.contents[3].contents[1]
-                    url_link = tag['href']
-                    txt = tag.getText()
-                    x = oodle_pattern.search(txt)
-                    name = txt[0:x.regs[0][0]]
-                    price = txt[x.regs[0][1] - 1:]
+            detail_list = bs.find_all('div', {'class': 'action-wrapper'})
+            for detail in detail_list:
+                for content in detail.contents:
+                    if type(content) == bs4.element.Tag:
+                        counter += 1
+                        tag = content.contents[3].contents[1]
+                        url_link = tag['href']
+                        txt = tag.getText()
+                        x = oodle_pattern.search(txt)
+                        name = txt[0:x.regs[0][0]]
+                        price = txt[x.regs[0][1] - 1:]
 
-                    results_all.append(
-                        {'id': counter,
-                         'name': name,
-                         'url': url_link,
-                         'price': price})
+                        results_all.append(
+                            {'id': counter,
+                             'name': name,
+                             'url': url_link,
+                             'price': price})
 
         type_results(results_all, results_all_typed)
 

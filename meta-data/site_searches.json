@@ -84,9 +84,10 @@
         "year_from": 1940,
         "year_to": 1949,
         "price_from": 1000,
-        "price_to": 30000,
-        "order": "date & inbs",
-        "distance": "country"
+        "price_to": 20000,
+        "order": "s=date",
+        "distance": "r=country",
+        "pages": 5
       }
     ]
   ],
@@ -175,9 +176,10 @@
         "year_from": 1950,
         "year_to": 1959,
         "price_from": 1000,
-        "price_to": 30000,
-        "order": "date & inbs",
-        "distance": "country"
+        "price_to": 20000,
+        "order": "s=date",
+        "distance": "r=country",
+        "pages": 5
       }
     ]
   ],
@@ -266,9 +268,10 @@
         "year_from": 1960,
         "year_to": 1970,
         "price_from": 1000,
-        "price_to": 30000,
-        "order": "date & inbs",
-        "distance": "country"
+        "price_to": 20000,
+        "order": "s=date",
+        "distance": "r=country",
+        "pages": 5
       }
     ]
   ]
