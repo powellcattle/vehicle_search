@@ -14,8 +14,8 @@ from utils.vehicle import CraigslistVehicle
 AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale?'
 AUTOTRADER_BASE_TRUCKSONLY_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
 OODLE_URL_START = 'https://cars.oodle.com'
-OODLE_URL_END  = '/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet/make_ford' \
-               '/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup'
+OODLE_URL_END = '/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet/make_ford' \
+                '/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup'
 oodle_pattern = re.compile('\sfor\s\$')
 pager_pattern = re.compile('of\s')
 
@@ -42,24 +42,21 @@ def find_whole_word(w):
     return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 
 
-def add_nonduplicate_to_results(results, final_results):
-    for result in results:
-        add_to = True
-        id = result.get('id')
-        name = result.get('name')
+def add_nonduplicate_to_results(candidates, final_results):
+    for candidate in candidates:
+        url = candidate.get('url')
+        name = candidate.get('name')
 
-        for row in final_results:
-            if id == row.get('id') or name == row.get('name'):
-                add_to = False
+        for item in final_results:
+            if url == item.get('url') or name == item.get('name'):
                 break
-
-        if add_to:
+        else:
             final_results.append(
                 {
-                    'id': result.get('id'),
-                    'name': result.get('name'),
-                    'url': result.get('url'),
-                    'price': result.get('price')
+                    'id': candidate.get('id'),
+                    'name': candidate.get('name'),
+                    'url': candidate.get('url'),
+                    'price': candidate.get('price')
                 }
             )
 
@@ -77,14 +74,18 @@ def type_results(results_all, results_all_typed):
                 for alias in filters_dict.get(vehicle_group):
                     listing_title = listing.get('name')
                     if find_whole_word(alias)(listing_title):
-                        results_all_typed.append(
-                            {'vtype': vehicle_group,
-                             'id': listing.get('id'),
-                             'name': listing.get('name'),
-                             'url': listing.get('url'),
-                             'price': listing.get('price')
-                             }
-                        )
+                        for item in results_all_typed:
+                            if item.get('url') == listing.get('url') or item.get('nane') == listing.get('name'):
+                                break
+                        else:
+                            results_all_typed.append(
+                                {'vtype': vehicle_group,
+                                 'id': listing.get('id'),
+                                 'name': listing.get('name'),
+                                 'url': listing.get('url'),
+                                 'price': listing.get('price')
+                                 }
+                            )
                         break
 
 
@@ -220,11 +221,15 @@ def search_autotrader(search_name, results_all, results_all_typed):
             else:
                 price = price.getText()
 
-            results_all.append(
-                {'id': counter,
-                 'name': name,
-                 'url': url_link,
-                 'price': price})
+            for item in results_all:
+                if url_link == item.get('url') or name == item.get('name'):
+                    break
+            else:
+                results_all.append(
+                    {'id': counter,
+                     'name': name,
+                     'url': url_link,
+                     'price': price})
 
         type_results(results_all, results_all_typed)
 
@@ -234,32 +239,31 @@ def search_autotrader(search_name, results_all, results_all_typed):
 
 
 def search_oodle(search_name, results_all, results_all_typed):
-    page_listing = [None,'o=15','o=30', 'o=45','o=60','o=75']
+    page_listing = [None, 'o=15', 'o=30', 'o=45', 'o=60', 'o=75']
     year_search = '/' + str(search_name['year_from']) + '_' + str(search_name['year_to']) + '-multiple-multiple'
     price_search = '/' + 'price_' + str(search_name['price_from']) + '_' + str(search_name['price_to'])
     order = search_name.get('order')
     distance = search_name.get('distance')
     counter = 0
 
-    html = OODLE_URL_START + year_search + OODLE_URL_END + price_search +'?' + order + '&' + distance
+    html = OODLE_URL_START + year_search + OODLE_URL_END + price_search + '?' + order + '&' + distance
     html = urlopen(html)
     bs = BeautifulSoup(html, 'html.parser')
     pager = bs.find('span', {'id': 'pager'}).getText()
     x = pager_pattern.search(pager)
     total_found = int(pager[x.regs[0][1]:len(pager) - 1])
-    total_pages = int(total_found/15)
-    if total_pages >= search_name['pages'] :
+    total_pages = int(total_found / 15)
+    if total_pages >= search_name['pages']:
         total_pages = search_name['pages']
-
 
     try:
         for i in range(total_pages):
             html = OODLE_URL_START + year_search + OODLE_URL_END + price_search
-            if i == 0 :
+            if i == 0:
                 html += '?' + order + '&' + distance
             else:
                 html += '?' + page_listing[i] + '&' + order + '&' + distance
-            print(html)
+            # print(html)
             html = urlopen(html)
             bs = BeautifulSoup(html, 'html.parser')
 
@@ -275,11 +279,15 @@ def search_oodle(search_name, results_all, results_all_typed):
                         name = txt[0:x.regs[0][0]]
                         price = txt[x.regs[0][1] - 1:]
 
-                        results_all.append(
-                            {'id': counter,
-                             'name': name,
-                             'url': url_link,
-                             'price': price})
+                        for item in results_all:
+                            if url_link == item.get('url') or name == item.get('name'):
+                                break
+                        else:
+                            results_all.append(
+                                {'id': counter,
+                                 'name': name,
+                                 'url': url_link,
+                                 'price': price})
 
         type_results(results_all, results_all_typed)
 
