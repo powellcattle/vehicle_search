@@ -274,5 +274,97 @@
         "pages": 5
       }
     ]
+  ],
+  [
+    {
+      "search_name": "1971-1987"
+    },
+    [
+      {
+        "search_site": "craigslist",
+        "max_year": 1987,
+        "min_year": 1971,
+        "min_price": 1000,
+        "max_price": 20000,
+        "hasPic": 1,
+        "postedToday": 1,
+        "searchNearby": "None",
+        "srchType": "T",
+        "sites": [
+          "alabama",
+          "arizona",
+          "arkansas",
+          "california",
+          "colorado",
+          "connecticut",
+          "delaware",
+          "florida",
+          "georgia",
+          "idaho",
+          "illinois",
+          "indiana",
+          "iowa",
+          "kansas",
+          "kentucky",
+          "louisiana",
+          "main",
+          "maryland",
+          "massachusetts",
+          "michigan",
+          "minnesota",
+          "mississippi",
+          "missouri",
+          "montana",
+          "nebraska",
+          "nevada",
+          "new hampshire",
+          "new jersey",
+          "new mexico",
+          "new your",
+          "north dakota",
+          "ohio",
+          "oklahoma",
+          "oregon",
+          "pennsylvania",
+          "rhode island",
+          "south carolina",
+          "south dakota",
+          "tennessee",
+          "texas",
+          "utah",
+          "vermont",
+          "virgina",
+          "washington",
+          "west virginia",
+          "wisconsin",
+          "wyoming"
+        ]
+      }
+    ],
+    [
+      {
+        "search_site": "autotrader",
+        "year_from": 1971,
+        "year_to": 1987,
+        "price_from": 1000,
+        "price_to": 20000,
+        "limit": 100,
+        "order": "created desc",
+        "distance": "nationwide",
+        "trucks only": true
+      }
+    ],
+    [
+      {
+        "search_site": "oodle",
+        "year_from": 1971,
+        "year_to": 1987,
+        "price_from": 1000,
+        "price_to": 20000,
+        "order": "s=date",
+        "distance": "r=country",
+        "pages": 5
+      }
+    ]
   ]
 ]

@@ -75,7 +75,8 @@ def type_results(results_all, results_all_typed):
                     listing_title = listing.get('name')
                     if find_whole_word(alias)(listing_title):
                         for item in results_all_typed:
-                            if item.get('url') == listing.get('url') or item.get('nane') == listing.get('name'):
+                            if (item.get('url') == listing.get('url') or item.get('name') == listing_title) and \
+                                    vehicle_group == item.get('vtype'):
                                 break
                         else:
                             results_all_typed.append(
@@ -203,8 +204,8 @@ def search_autotrader(search_name, results_all, results_all_typed):
         bs = BeautifulSoup(html, 'html.parser')
         detail_list = bs.find_all('div', {'class': 'details'})
         counter = 0
-        for detail in detail_list:
 
+        for detail in detail_list:
             counter += 1
             details_html = detail.find('a', {'class': 'name'}, href=True)
             url_link = details_html['href']
@@ -235,7 +236,10 @@ def search_autotrader(search_name, results_all, results_all_typed):
 
     except AttributeError as e:
         print(e)
-        sys.exit(-1)
+    except HTTPError as e:
+        print(e.code)
+    except URLError as e:
+        print(e)
 
 
 def search_oodle(search_name, results_all, results_all_typed):
@@ -256,8 +260,10 @@ def search_oodle(search_name, results_all, results_all_typed):
     if total_pages >= search_name['pages']:
         total_pages = search_name['pages']
 
-    try:
-        for i in range(total_pages):
+    for i in range(total_pages):
+
+        try:
+
             html = OODLE_URL_START + year_search + OODLE_URL_END + price_search
             if i == 0:
                 html += '?' + order + '&' + distance
@@ -289,8 +295,16 @@ def search_oodle(search_name, results_all, results_all_typed):
                                  'url': url_link,
                                  'price': price})
 
-        type_results(results_all, results_all_typed)
+        except AttributeError as e:
+            print(e)
+            return
+        except HTTPError as e:
+            print(e.code)
+            return
+        except URLError as e:
+            print(e)
+            return
 
-    except AttributeError as e:
-        print(e)
-        sys.exit(-1)
+    type_results(results_all, results_all_typed)
+
+    return
