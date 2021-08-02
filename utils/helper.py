@@ -34,7 +34,7 @@ try:
 except OSError as e:
     sys.intern(e)
 
-list_state_dict = stateSites['states']
+list_state_dict = stateSites.get('states')
 SEARCH_LIMIT = 100
 
 
@@ -95,6 +95,7 @@ def write_html(results_all_typed, results_all):
 
     for filters_dict in sort_filters_json['filters']:
 
+        text = ''
         for vehicle in filters_dict:
             text = '<p><table border="0" style="width: 100%; border-collapse: collapse; border-style: none;"><thead>'
             text += '<tr style="text-align: left; border-style: hidden;">'
@@ -139,7 +140,6 @@ def write_html(results_all_typed, results_all):
 
 
 def search_craigslist(search_name, results_all, results_all_typed):
-    added_to = True
     #
     # Filter is defined per search request
     #
@@ -178,6 +178,8 @@ def search_craigslist(search_name, results_all, results_all_typed):
     except HTTPError as e:
         print(e)
     except URLError as e:
+        print(e)
+    except ConnectionError as e:
         print(e)
 
     return

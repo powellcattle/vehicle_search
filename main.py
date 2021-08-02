@@ -3,9 +3,12 @@ import sys
 
 from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader
 
+REPORT_DIR = 'C:/dev/reports/'
+DATA_DIR = './meta-data/'
+
 search_names_json = dict()
 try:
-    f = open("./meta-data/site_searches.json")
+    f = open(DATA_DIR + 'site_searches.json')
     search_names_json = json.load(f)
     f.close()
 except OSError as e:
@@ -20,8 +23,8 @@ for search_list in search_names_json:
     results_all = list(dict())
     results_all_typed = list(dict())
 
-    for i in range(1, len(search_list)):
-        site = search_list[i][0]
+    for idx in range(1, len(search_list)):
+        site = search_list[idx][0]
         search_type = site.get("search_site")
 
         if search_type == 'craigslist':
@@ -37,7 +40,7 @@ for search_list in search_names_json:
             continue
 
     try:
-        f = open('C:/dev/reports/' + name + '.html', 'w', encoding='utf8')
+        f = open(REPORT_DIR + name + '.html', 'w', encoding='utf8')
         text = write_html(results_all_typed, results_all)
         f.write(text)
         f.close()
