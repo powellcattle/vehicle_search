@@ -3,7 +3,7 @@ import sys
 
 from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader
 
-REPORT_DIR = 'C:/dev/reports/'
+REPORT_DIR = '../../dev/reports/'
 DATA_DIR = './meta-data/'
 
 search_names_json = dict()
