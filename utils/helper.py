@@ -1,7 +1,10 @@
 import json
 import re
+import smtplib
+import ssl
 import sys
 import urllib
+from email.message import EmailMessage
 from urllib.error import HTTPError
 from urllib.error import URLError
 from urllib.request import urlopen
@@ -310,3 +313,24 @@ def search_oodle(search_name, results_all, results_all_typed):
     type_results(results_all, results_all_typed)
 
     return
+
+
+class Mail:
+    def __init__(self, port, smtp_server_domain_name, sender_mail, password):
+        self.msg = EmailMessage()
+        self.msg['Subject'] = 'Vehicle Reports'
+        # self.msg['Bcc'] = ','.join(['spowell@sbcglobal.net'])
+        self.msg['Bcc'] = ','.join(['srb42003@yahoo.com', 'rb1327@yahoo.com'])
+
+        self.msg['From'] = 'spowell@powellcattle.com'
+        self.port = port
+        self.smtp_server_domain_name = smtp_server_domain_name
+        self.sender_mail = sender_mail
+        self.password = password
+
+    def send(self):
+        ssl_context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL(self.smtp_server_domain_name, self.port, context=ssl_context) as service:
+            service.login(user=self.sender_mail, password=self.password)
+            service.send_message(self.msg)

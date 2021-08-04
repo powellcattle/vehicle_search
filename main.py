@@ -1,6 +1,9 @@
 import json
+import mimetypes
+import os
 import sys
 
+from myemail import Mail
 from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader
 
 REPORT_DIR = '../../dev/reports/'
@@ -44,6 +47,29 @@ for search_list in search_names_json:
         text = write_html(results_all_typed, results_all)
         f.write(text)
         f.close()
-
     except OSError as e:
         print(e)
+
+# read smtp email server information to send reports
+mail = None
+try:
+    f = open(DATA_DIR + 'email_server.json')
+    es = json.load(f)
+    mail = Mail(port=es['port'],
+                smtp_server_domain_name=es['smtp_server_domain_name'],
+                sender_mail=es['sender_mail'],
+                password=es['password'])
+    f.close()
+
+    for filename in os.listdir(REPORT_DIR):
+        mime_type = mimetypes.guess_type(filename)
+        mime_type, mime_subtype = mime_type[0].split('/', 1)
+        f = os.path.join(REPORT_DIR, filename)
+
+        with open(f, 'rb') as ap:
+            mail.msg.add_attachment(ap.read(), maintype=mime_type, subtype=mime_subtype, filename=f)
+
+    mail.send()
+
+except OSError as e:
+    sys.intern(e.strerror)
