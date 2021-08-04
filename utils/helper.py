@@ -321,7 +321,6 @@ class Mail:
         self.msg['Subject'] = 'Vehicle Reports'
         # self.msg['Bcc'] = ','.join(['spowell@sbcglobal.net'])
         self.msg['Bcc'] = ','.join(['srb42003@yahoo.com', 'rb1327@yahoo.com'])
-
         self.msg['From'] = 'spowell@powellcattle.com'
         self.port = port
         self.smtp_server_domain_name = smtp_server_domain_name
