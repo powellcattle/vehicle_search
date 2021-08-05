@@ -315,13 +315,13 @@ def search_oodle(search_name, results_all, results_all_typed):
     return
 
 
-class Mail:
+class ReportMailer:
     def __init__(self, port, smtp_server_domain_name, sender_mail, password):
         self.msg = EmailMessage()
         self.msg['Subject'] = 'Vehicle Reports'
         # self.msg['Bcc'] = ','.join(['spowell@sbcglobal.net'])
-        self.msg['Bcc'] = ','.join(['srb42003@yahoo.com', 'rb1327@yahoo.com'])
-        self.msg['From'] = 'spowell@powellcattle.com'
+        self.msg['Bcc'] = ','.join(['srb42003@yahoo.com', 'rb1327@yahoo.com', 'spowell@powellcattle.com'])
+        self.msg['From'] = 'spowell@sbcglobal.net'
         self.port = port
         self.smtp_server_domain_name = smtp_server_domain_name
         self.sender_mail = sender_mail

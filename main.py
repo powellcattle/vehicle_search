@@ -1,12 +1,29 @@
 import json
+import logging
 import mimetypes
 import os
 import sys
 
-from myemail import Mail
-from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader
+from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader, ReportMailer
 
+
+def _init_logger():
+    logger = logging.getLogger('vehicle_search')
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(sys.stderr)
+    handler.setLevel(logging.INFO)
+    formatter = logging.Formatter(
+        '%(asctime)s: %(levelname)s: %(name)s: %(module)s: %(message)s'
+    )
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+
+_logger = None
 # need to remove all .html files from REPORT DIR before starting
+if __name__ == '__main__':
+    _init_logger()
+    _logger = logging.getLogger('vehicle_search')
 
 REPORT_DIR = '../../dev/reports/'
 DATA_DIR = './meta-data/'
@@ -18,10 +35,11 @@ try:
     search_names_json = json.load(f)
     f.close()
 except OSError as e:
-    sys.intern(e.strerror)
-
-if search_names_json is None:
-    sys.exit((-1))
+    _logger.error('Problem opening site_searches.json: %s', e.strerror)
+    sys.exit(-1)
+except:
+    _logger.error('Unknown Error %s', sys.exc_info()[2])
+    sys.exit(-1)
 
 # each search name can have ..n searches on various search sites
 for search_list in search_names_json:
@@ -54,17 +72,21 @@ for search_list in search_names_json:
         f.write(text)
         f.close()
     except OSError as e:
-        print(e)
+        _logger.error('Problem writing HTML reports %s', e.strerror)
+        sys.exit(-1)
+    except:
+        _logger.error('Unknown Error %s', sys.exc_info()[2])
+        sys.exit(-1)
 
 # read smtp email server information to send reports
 mail = None
 try:
     f = open(DATA_DIR + 'email_server.json')
     es = json.load(f)
-    mail = Mail(port=es['port'],
-                smtp_server_domain_name=es['smtp_server_domain_name'],
-                sender_mail=es['sender_mail'],
-                password=es['password'])
+    mail = ReportMailer(port=es['port'],
+                        smtp_server_domain_name=es['smtp_server_domain_name'],
+                        sender_mail=es['sender_mail'],
+                        password=es['password'])
     f.close()
 
     for filename in os.listdir(REPORT_DIR):
@@ -78,4 +100,9 @@ try:
     mail.send()
 
 except OSError as e:
-    sys.intern(e.strerror)
+    _logger.error('Problem with emailing reports %s', e.strerror)
+    sys.exit(-1)
+
+except:
+    _logger.error('Unknown Error %s', sys.exc_info()[2])
+    sys.exit(-1)
