@@ -31,9 +31,9 @@ DATA_DIR = './meta-data/'
 # read external search criteria
 search_names_json = None
 try:
-    f = open(DATA_DIR + 'site_searches.json')
-    search_names_json = json.load(f)
-    f.close()
+    file_path = open(DATA_DIR + 'site_searches.json')
+    search_names_json = json.load(file_path)
+    file_path.close()
 except OSError as e:
     _logger.error('Problem opening site_searches.json: %s', e.strerror)
     sys.exit(-1)
@@ -69,10 +69,10 @@ for search_list in search_names_json:
         # after all the criteria is completed for a site name, write the results to HTML
         file_name = os.path.join(REPORT_DIR, (name + '.html'))
         _logger.debug(file_name)
-        f = open(file_name, 'w', encoding='utf8')
+        file_path = open(file_name, 'w', encoding='utf8')
         text = write_html(results_all_typed, results_all)
-        f.write(text)
-        f.close()
+        file_path.write(text)
+        file_path.close()
     except OSError as e:
         _logger.error('Problem writing HTML reports %s', e.strerror)
         sys.exit(-1)
@@ -83,21 +83,23 @@ for search_list in search_names_json:
 # read smtp email server information to send reports
 mail = None
 try:
-    f = open(DATA_DIR + 'email_server.json')
-    es = json.load(f)
+    file_path = open(DATA_DIR + 'email_server.json')
+    es = json.load(file_path)
     mail = ReportMailer(port=es['port'],
                         smtp_server_domain_name=es['smtp_server_domain_name'],
                         sender_mail=es['sender_mail'],
                         password=es['password'])
-    f.close()
+    file_path.close()
 
     for filename in os.listdir(REPORT_DIR):
         mime_type = mimetypes.guess_type(filename)
         mime_type, mime_subtype = mime_type[0].split('/', 1)
-        f = os.path.join(REPORT_DIR, filename)
+        if mime_type != 'text' or mime_subtype != 'html':
+            continue
 
-        with open(f, 'rb') as ap:
-            mail.msg.add_attachment(ap.read(), maintype=mime_type, subtype=mime_subtype, filename=f)
+        file_path = os.path.join(REPORT_DIR, filename)
+        with open(file_path, 'rb') as attachment:
+            mail.msg.add_attachment(attachment.read(), maintype=mime_type, subtype=mime_subtype, filename=filename)
 
     mail.send()
 
