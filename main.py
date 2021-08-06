@@ -67,7 +67,9 @@ for search_list in search_names_json:
 
     try:
         # after all the criteria is completed for a site name, write the results to HTML
-        f = open(REPORT_DIR + name + '.html', 'w', encoding='utf8')
+        file_name = os.path.join(REPORT_DIR, (name + '.html'))
+        _logger.debug(file_name)
+        f = open(file_name, 'w', encoding='utf8')
         text = write_html(results_all_typed, results_all)
         f.write(text)
         f.close()
