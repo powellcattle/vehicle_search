@@ -321,7 +321,7 @@ class ReportMailer:
         self.msg['Subject'] = 'Vehicle Reports'
         # self.msg['Bcc'] = ','.join(['spowell@sbcglobal.net'])
         self.msg['Bcc'] = ','.join(['rb42003@yahoo.com', 'rb1327@yahoo.com', 'spowell@powellcattle.com'])
-        self.msg['From'] = 'spowell@sbcglobal.net'
+        self.msg['From'] = 'spowell@powellcattle.com'
         self.port = port
         self.smtp_server_domain_name = smtp_server_domain_name
         self.sender_mail = sender_mail
