@@ -23,8 +23,8 @@ try:
 except OSError as e:
     _logger.error('Problem opening site_searches.json: %s', e.strerror)
     sys.exit(-1)
-except:
-    _logger.error('Unknown Error %s', sys.exc_info()[2])
+except Exception as e:
+    _logger.error('Unknown Error %s', e)
     sys.exit(-1)
 
 # each search name can have ..n searches on various search sites
@@ -47,10 +47,10 @@ for search_list in search_names_json:
             # pass
             search_autotrader(site, results_all, results_all_typed)
         elif search_type == 'oodle':
-            pass
+            # pass
             search_oodle(site, results_all, results_all_typed)
         elif search_type == 'classiccars':
-            pass
+            # pass
             search_classiccars(site, results_all, results_all_typed)
         else:
             continue
@@ -66,8 +66,8 @@ for search_list in search_names_json:
     except OSError as e:
         _logger.error('Problem writing HTML reports %s', e.strerror)
         sys.exit(-1)
-    except:
-        _logger.error('Unknown Error %s', sys.exc_info()[2])
+    except Exception as e:
+        _logger.error('Unknown Error %s', e)
         sys.exit(-1)
 
 # read smtp email server information to send reports
@@ -91,13 +91,13 @@ try:
         with open(file_path, 'rb') as attachment:
             mail.msg.add_attachment(attachment.read(), maintype=mime_type, subtype=mime_subtype, filename=filename)
 
-    # mail.send()
+    mail.send()
     _logger.info('Email sent')
 
 except OSError as e:
     _logger.error('Problem with emailing reports %s', e.strerror)
     sys.exit(-1)
 
-except:
-    _logger.error('Unknown Error %s', sys.exc_info()[2])
+except Exception as e:
+    _logger.error('Unknown Error %s', e)
     sys.exit(-1)

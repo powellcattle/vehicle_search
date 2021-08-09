@@ -5,7 +5,7 @@ import re
 import smtplib
 import ssl
 import sys
-import urllib
+import urllib.parse
 from email.message import EmailMessage
 from urllib.error import HTTPError
 from urllib.error import URLError
@@ -19,7 +19,7 @@ from utils.vehicle import CraigslistVehicle
 _logger = None
 # need to remove all .html files from REPORT DIR before starting
 if __name__ == 'utils.helper':
-    _logger = logging.getLogger('vechicle_search')
+    _logger = logging.getLogger('vehicle_search')
 
 AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale?'
 AUTOTRADER_BASE_TRUCKSONLY_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
@@ -27,8 +27,8 @@ OODLE_URL_START = 'https://cars.oodle.com'
 OODLE_URL_END = '/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet/make_ford' \
                 '/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup'
 CLASSICCARS_URL = 'https://classiccars.com'
-OODLE_PATTERN = re.compile('\sfor\s\$')
-PAGER_PATTERN = re.compile('of\s')
+OODLE_PATTERN = re.compile('\\sfor\\s\\$')
+PAGER_PATTERN = re.compile('of\\s')
 
 stateSites = []
 try:
@@ -44,7 +44,7 @@ try:
     f.close()
 except OSError as e:
     _logger.error(e)
-    sys.intern(e)
+    sys.intern(e.strerror)
 
 list_state_dict = stateSites.get('states')
 SEARCH_LIMIT = 100
@@ -219,9 +219,7 @@ def search_autotrader(search_name, results_all, results_all_typed):
             html = AUTOTRADER_BASE_TRUCKSONLY_URL + urllib.parse.urlencode(search_filter)
         else:
             html = AUTOTRADER_BASE_URL + urllib.parse.urlencode(search_filter)
-
-        req = Request(html, headers={'User-Agent': 'Mozilla/5.0'})
-        html = urlopen(req)
+        html = urlopen(html)
 
         bs = BeautifulSoup(html, 'html.parser')
         detail_list = bs.find_all('div', {'class': 'details'})
@@ -415,7 +413,7 @@ def configure_logger(name, log_path):
         },
         'handlers': {
             'console': {
-                'level': 'DEBUG',
+                'level': 'INFO',
                 'class': 'logging.StreamHandler',
                 'formatter': 'default',
                 'stream': 'ext://sys.stdout'
