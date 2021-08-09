@@ -1,33 +1,18 @@
 import json
-import logging
 import mimetypes
 import os
 import sys
 
 from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader, ReportMailer, \
-    search_classiccars
+    search_classiccars, configure_logger
 
-
-def _init_logger():
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-    handler = logging.StreamHandler(sys.stderr)
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter(
-        '%(asctime)s: %(levelname)s: %(name)s: %(module)s: %(message)s'
-    )
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-
+REPORT_DIR = '../../dev/reports/'
+DATA_DIR = './meta-data/'
 
 _logger = None
 # need to remove all .html files from REPORT DIR before starting
 if __name__ == '__main__':
-    _init_logger()
-    _logger = logging.getLogger(__name__)
-
-REPORT_DIR = '../../dev/reports/'
-DATA_DIR = './meta-data/'
+    _logger = configure_logger('vehicle_search', '../reports/vehicle_search.log')
 
 # read external search criteria
 search_names_json = None
@@ -46,6 +31,7 @@ except:
 for search_list in search_names_json:
 
     name = search_list[0].get("search_name")
+    _logger.info('Loading ' + name + ' search')
     results_all = list(dict())
     results_all_typed = list(dict())
 
@@ -53,7 +39,7 @@ for search_list in search_names_json:
         site = search_list[idx][0]
         # represents the site e.g., craigslist or autotrader...
         search_type = site.get("search_site")
-
+        _logger.info('Searching ' + search_type)
         if search_type == 'craigslist':
             # pass
             search_craigslist(site, results_all, results_all_typed)
@@ -105,7 +91,8 @@ try:
         with open(file_path, 'rb') as attachment:
             mail.msg.add_attachment(attachment.read(), maintype=mime_type, subtype=mime_subtype, filename=filename)
 
-    mail.send()
+    # mail.send()
+    _logger.info('Email sent')
 
 except OSError as e:
     _logger.error('Problem with emailing reports %s', e.strerror)

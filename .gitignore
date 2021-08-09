@@ -2,3 +2,5 @@
 /venv/
 /meta-data/email_server.json
 log*.*
+test.html
+test.json

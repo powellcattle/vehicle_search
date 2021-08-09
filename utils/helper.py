@@ -1,5 +1,6 @@
 import json
 import logging
+import logging.config
 import re
 import smtplib
 import ssl
@@ -15,24 +16,10 @@ from bs4 import BeautifulSoup
 
 from utils.vehicle import CraigslistVehicle
 
-
-def _init_logger():
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-    handler = logging.StreamHandler(sys.stderr)
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter(
-        '%(asctime)s: %(levelname)s: %(name)s: %(module)s: %(message)s'
-    )
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-
-
 _logger = None
 # need to remove all .html files from REPORT DIR before starting
 if __name__ == 'utils.helper':
-    _init_logger()
-    _logger = logging.getLogger(__name__)
+    _logger = logging.getLogger('vechicle_search')
 
 AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale?'
 AUTOTRADER_BASE_TRUCKSONLY_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
@@ -40,8 +27,8 @@ OODLE_URL_START = 'https://cars.oodle.com'
 OODLE_URL_END = '/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet/make_ford' \
                 '/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup'
 CLASSICCARS_URL = 'https://classiccars.com'
-oodle_pattern = re.compile('\sfor\s\$')
-pager_pattern = re.compile('of\s')
+OODLE_PATTERN = re.compile('\sfor\s\$')
+PAGER_PATTERN = re.compile('of\s')
 
 stateSites = []
 try:
@@ -49,13 +36,14 @@ try:
     sort_filters_json = json.load(f)
     f.close()
 except OSError as e:
-    _lo
+    _logger.error(e)
 
 try:
     f = open("meta-data/craigsliststates.json")
     stateSites = json.load(f)
     f.close()
 except OSError as e:
+    _logger.error(e)
     sys.intern(e)
 
 list_state_dict = stateSites.get('states')
@@ -63,7 +51,13 @@ SEARCH_LIMIT = 100
 
 
 def find_whole_word(w):
-    return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
+    try:
+        return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
+    except ValueError as e:
+        _logger.error(e)
+    except TypeError as e:
+        _logger.error(e)
+    return
 
 
 def add_nonduplicate_to_results(candidates, final_results):
@@ -200,11 +194,11 @@ def search_craigslist(search_name, results_all, results_all_typed):
         type_results(results_all, results_all_typed)
 
     except HTTPError as e:
-        print(e)
+        _logger.error(e)
     except URLError as e:
-        print(e)
+        _logger.error(e)
     except ConnectionError as e:
-        print(e)
+        _logger.error(e)
 
     return
 
@@ -226,7 +220,9 @@ def search_autotrader(search_name, results_all, results_all_typed):
         else:
             html = AUTOTRADER_BASE_URL + urllib.parse.urlencode(search_filter)
 
-        html = urlopen(html)
+        req = Request(html, headers={'User-Agent': 'Mozilla/5.0'})
+        html = urlopen(req)
+
         bs = BeautifulSoup(html, 'html.parser')
         detail_list = bs.find_all('div', {'class': 'details'})
         counter = 0
@@ -261,11 +257,11 @@ def search_autotrader(search_name, results_all, results_all_typed):
         type_results(results_all, results_all_typed)
 
     except AttributeError as e:
-        print(e)
+        _logger.error(e)
     except HTTPError as e:
         print(e.code)
     except URLError as e:
-        print(e)
+        _logger.error(e)
 
 
 def search_oodle(search_name, results_all, results_all_typed):
@@ -277,26 +273,27 @@ def search_oodle(search_name, results_all, results_all_typed):
     counter = 0
 
     html = OODLE_URL_START + year_search + OODLE_URL_END + price_search + '?' + order + '&' + distance
-    html = urlopen(html)
+    req = Request(html, headers={'User-Agent': 'Mozilla/5.0'})
+    html = urlopen(req)
+
     bs = BeautifulSoup(html, 'html.parser')
     pager = bs.find('span', {'id': 'pager'}).getText()
-    x = pager_pattern.search(pager)
+    x = PAGER_PATTERN.search(pager)
     total_found = int(pager[x.regs[0][1]:len(pager) - 1])
     total_pages = int(total_found / 15)
     if total_pages >= search_name['pages']:
         total_pages = search_name['pages']
 
     for i in range(total_pages):
-
         try:
-
             html = OODLE_URL_START + year_search + OODLE_URL_END + price_search
             if i == 0:
                 html += '?' + order + '&' + distance
             else:
                 html += '?' + page_listing[i] + '&' + order + '&' + distance
             # print(html)
-            html = urlopen(html)
+            req = Request(html, headers={'User-Agent': 'Mozilla/5.0'})
+            html = urlopen(req)
             bs = BeautifulSoup(html, 'html.parser')
 
             detail_list = bs.find_all('div', {'class': 'action-wrapper'})
@@ -307,7 +304,7 @@ def search_oodle(search_name, results_all, results_all_typed):
                         tag = content.contents[3].contents[1]
                         url_link = tag['href']
                         txt = tag.getText()
-                        x = oodle_pattern.search(txt)
+                        x = OODLE_PATTERN.search(txt)
                         name = txt[0:x.regs[0][0]]
                         price = txt[x.regs[0][1] - 1:]
 
@@ -322,17 +319,15 @@ def search_oodle(search_name, results_all, results_all_typed):
                                  'price': price})
 
         except AttributeError as e:
-            print(e)
+            _logger.error(e)
             return
         except HTTPError as e:
-            print(e.code)
+            _logger.error(e.code)
             return
         except URLError as e:
-            print(e)
-            return
-
+            _logger.error(e)
+        return
     type_results(results_all, results_all_typed)
-
     return
 
 
@@ -363,7 +358,6 @@ def search_classiccars(search_name, results_all, results_all_typed):
         detail_list = bs.find_all(attrs={'class': re.compile(r'flexbox fx-justify w100 fx-va-center h-30px pad-r-md')})
 
         counter = 0
-
         for detail in detail_list:
             counter += counter
             content = detail.contents[1]
@@ -389,7 +383,7 @@ def search_classiccars(search_name, results_all, results_all_typed):
     except URLError as e:
         _logger.error(e)
     except:
-        _logger(sys.exc_info()[2])
+        _logger.error(sys.exc_info()[2])
 
 
 class ReportMailer:
@@ -410,3 +404,41 @@ class ReportMailer:
         with smtplib.SMTP_SSL(self.smtp_server_domain_name, self.port, context=ssl_context) as service:
             service.login(user=self.sender_mail, password=self.password)
             service.send_message(self.msg)
+
+
+def configure_logger(name, log_path):
+    logging.config.dictConfig({
+        'version': 1,
+        'formatters': {
+            'default': {'format': '%(asctime)s - [%(levelname)s] - %(module)s.%(funcName)s:%(lineno)d: -%(message)s',
+                        'datefmt': '%Y-%m-%d %H:%M:%S'}
+        },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'default',
+                'stream': 'ext://sys.stdout'
+            },
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.RotatingFileHandler',
+                'formatter': 'default',
+                'filename': log_path,
+                'maxBytes': 1024,
+                'backupCount': 3
+            }
+        },
+        'loggers': {
+            'vehicle_search': {
+                'level': 'DEBUG',
+                'handlers': ['console', 'file']
+            },
+            'module': {
+                'level': 'DEBUG',
+                'handlers': ['console', 'file']
+            }
+        },
+        'disable_existing_loggers': False
+    })
+    return logging.getLogger(name)
