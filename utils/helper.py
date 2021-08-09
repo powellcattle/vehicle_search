@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 
 from utils.vehicle import CraigslistVehicle
 
+
 def _init_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
@@ -25,6 +26,7 @@ def _init_logger():
     )
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
 
 _logger = None
 # need to remove all .html files from REPORT DIR before starting
@@ -58,7 +60,6 @@ except OSError as e:
 
 list_state_dict = stateSites.get('states')
 SEARCH_LIMIT = 100
-
 
 
 def find_whole_word(w):
@@ -335,7 +336,7 @@ def search_oodle(search_name, results_all, results_all_typed):
     return
 
 
-def search_classiccars(search_name, results_all, results_all_typed ):
+def search_classiccars(search_name, results_all, results_all_typed):
     search_filter = {
         'year_from': search_name.get('year_from'),
         'year_to': search_name.get('year_to'),

@@ -1,3 +1,4 @@
 # Project exclude paths
 /venv/
 /meta-data/email_server.json
+log*.*
