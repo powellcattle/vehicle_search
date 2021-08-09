@@ -4,11 +4,12 @@ import mimetypes
 import os
 import sys
 
-from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader, ReportMailer
+from utils.helper import write_html, search_oodle, search_craigslist, search_autotrader, ReportMailer, \
+    search_classiccars
 
 
 def _init_logger():
-    logger = logging.getLogger('vehicle_search')
+    logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
     handler = logging.StreamHandler(sys.stderr)
     handler.setLevel(logging.INFO)
@@ -23,7 +24,7 @@ _logger = None
 # need to remove all .html files from REPORT DIR before starting
 if __name__ == '__main__':
     _init_logger()
-    _logger = logging.getLogger('vehicle_search')
+    _logger = logging.getLogger(__name__)
 
 REPORT_DIR = '../../dev/reports/'
 DATA_DIR = './meta-data/'
@@ -60,8 +61,11 @@ for search_list in search_names_json:
             # pass
             search_autotrader(site, results_all, results_all_typed)
         elif search_type == 'oodle':
-            # pass
+            pass
             search_oodle(site, results_all, results_all_typed)
+        elif search_type == 'classiccars':
+            pass
+            search_classiccars(site, results_all, results_all_typed)
         else:
             continue
 

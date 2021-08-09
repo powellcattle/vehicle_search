@@ -89,6 +89,15 @@
         "distance": "r=country",
         "pages": 5
       }
+    ],
+    [
+      {
+        "search_site": "classiccars",
+        "year_from": 1940,
+        "year_to": 1949,
+        "price_min": 1000,
+        "price_max": 15000
+      }
     ]
   ],
   [
@@ -180,6 +189,15 @@
         "order": "s=date",
         "distance": "r=country",
         "pages": 5
+      }
+    ],
+    [
+      {
+        "search_site": "classiccars",
+        "year_from": 1950,
+        "year_to": 1959,
+        "price_min": 1000,
+        "price_max": 15000
       }
     ]
   ],
@@ -273,6 +291,15 @@
         "distance": "r=country",
         "pages": 5
       }
+    ],
+    [
+      {
+        "search_site": "classiccars",
+        "year_from": 1960,
+        "year_to": 1970,
+        "price_min": 1000,
+        "price_max": 15000
+      }
     ]
   ],
   [
@@ -364,6 +391,15 @@
         "order": "s=date",
         "distance": "r=country",
         "pages": 5
+      }
+    ],
+    [
+      {
+        "search_site": "classiccars",
+        "year_from": 1971,
+        "year_to": 1987,
+        "price_min": 1000,
+        "price_max": 15000
       }
     ]
   ]

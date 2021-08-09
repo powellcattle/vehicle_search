@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import smtplib
 import ssl
@@ -7,18 +8,36 @@ import urllib
 from email.message import EmailMessage
 from urllib.error import HTTPError
 from urllib.error import URLError
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 import bs4
 from bs4 import BeautifulSoup
 
 from utils.vehicle import CraigslistVehicle
 
+def _init_logger():
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(sys.stderr)
+    handler.setLevel(logging.INFO)
+    formatter = logging.Formatter(
+        '%(asctime)s: %(levelname)s: %(name)s: %(module)s: %(message)s'
+    )
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+_logger = None
+# need to remove all .html files from REPORT DIR before starting
+if __name__ == 'utils.helper':
+    _init_logger()
+    _logger = logging.getLogger(__name__)
+
 AUTOTRADER_BASE_URL = 'https://classics.autotrader.com/classic-cars-for-sale?'
 AUTOTRADER_BASE_TRUCKSONLY_URL = 'https://classics.autotrader.com/classic-cars-for-sale/classic_trucks-for-sale?'
 OODLE_URL_START = 'https://cars.oodle.com'
 OODLE_URL_END = '/houston-tx/antique-classic-cars/condition_used/has_photo_thumbnail/make_chevrolet/make_ford' \
                 '/make_international/make_studebaker/model_panel_truck/model_pick_up/model_pickup'
+CLASSICCARS_URL = 'https://classiccars.com'
 oodle_pattern = re.compile('\sfor\s\$')
 pager_pattern = re.compile('of\s')
 
@@ -28,7 +47,7 @@ try:
     sort_filters_json = json.load(f)
     f.close()
 except OSError as e:
-    sys.intern(e)
+    _lo
 
 try:
     f = open("meta-data/craigsliststates.json")
@@ -39,6 +58,7 @@ except OSError as e:
 
 list_state_dict = stateSites.get('states')
 SEARCH_LIMIT = 100
+
 
 
 def find_whole_word(w):
@@ -313,6 +333,62 @@ def search_oodle(search_name, results_all, results_all_typed):
     type_results(results_all, results_all_typed)
 
     return
+
+
+def search_classiccars(search_name, results_all, results_all_typed ):
+    search_filter = {
+        'year_from': search_name.get('year_from'),
+        'year_to': search_name.get('year_to'),
+        'price_min': search_name.get('price_min'),
+        'price_max': search_name.get('price_max')
+    }
+
+    try:
+        html = CLASSICCARS_URL + \
+               '/listings/find/' + \
+               str(search_filter.get('year_from')) + \
+               '-' + \
+               str(search_filter.get('year_to')) + \
+               '?auction=false&country=united-states&dealer=true&description=truck&' + \
+               'price-max=' + \
+               str(search_filter.get('price_max')) + \
+               '&price-min=' + \
+               str(search_filter.get('price_min')) + \
+               '&private=true&ps=60&s=datelisted&sa=true'
+        req = Request(html, headers={'User-Agent': 'Mozilla/5.0'})
+        html = urlopen(req)
+        bs = BeautifulSoup(html, 'html.parser')
+
+        detail_list = bs.find_all(attrs={'class': re.compile(r'flexbox fx-justify w100 fx-va-center h-30px pad-r-md')})
+
+        counter = 0
+
+        for detail in detail_list:
+            counter += counter
+            content = detail.contents[1]
+            tag = content.contents[1]
+            url_link = 'https://classiccars.com' + tag.get('href')
+            name = tag.get('title')
+
+            content = detail.contents[3]
+            price = content.contents[1].getText().strip('\n')
+
+            results_all.append(
+                {'id': counter,
+                 'name': name,
+                 'url': url_link,
+                 'price': price})
+
+        type_results(results_all, results_all_typed)
+
+    except AttributeError as e:
+        _logger.error(e)
+    except HTTPError as e:
+        _logger.error(e)
+    except URLError as e:
+        _logger.error(e)
+    except:
+        _logger(sys.exc_info()[2])
 
 
 class ReportMailer:
