@@ -83,6 +83,8 @@ try:
 
     for filename in os.listdir(REPORT_DIR):
         mime_type = mimetypes.guess_type(filename)
+        if mime_type[0] is None:
+            continue
         mime_type, mime_subtype = mime_type[0].split('/', 1)
         if mime_type != 'text' or mime_subtype != 'html':
             continue
