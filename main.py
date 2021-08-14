@@ -23,9 +23,6 @@ try:
 except OSError as e:
     _logger.error('Problem opening site_searches.json: %s', e.strerror)
     sys.exit(-1)
-except Exception as e:
-    _logger.error('Unknown Error %s', e)
-    sys.exit(-1)
 
 # each search name can have ..n searches on various search sites
 for search_list in search_names_json:

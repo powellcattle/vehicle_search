@@ -37,9 +37,6 @@ try:
     f.close()
 except OSError as e:
     _logger.error(e)
-except Exception as (e):
-    _logger.error(e)
-
 
 try:
     f = open("meta-data/craigsliststates.json")
@@ -60,8 +57,7 @@ def find_whole_word(w):
         _logger.error(e)
     except TypeError as e:
         _logger.error(e)
-    except Exception as (e):
-        _logger.error(e)
+
     return
 
 
@@ -198,13 +194,13 @@ def search_craigslist(search_name, results_all, results_all_typed):
 
         type_results(results_all, results_all_typed)
 
-    except HTTPError as (e):
+    except HTTPError as e:
         _logger.error(e)
-    except URLError as (e):
+    except URLError as e:
         _logger.error(e)
-    except ConnectionError as (e):
+    except ConnectionError as e:
         _logger.error(e)
-    except Exception as (e):
+    except Exception as e:
         _logger.error(e)
 
     return
@@ -261,13 +257,13 @@ def search_autotrader(search_name, results_all, results_all_typed):
 
         type_results(results_all, results_all_typed)
 
-    except AttributeError as (e):
+    except AttributeError as e:
         _logger.error(e)
-    except HTTPError as (e):
+    except HTTPError as e:
         print(e.code)
-    except URLError as (e):
+    except URLError as e:
         _logger.error(e)
-    except Exception as (e):
+    except Exception as e:
         _logger.error(e)
 
 
@@ -325,15 +321,15 @@ def search_oodle(search_name, results_all, results_all_typed):
                                  'url': url_link,
                                  'price': price})
 
-        except AttributeError as (e):
+        except AttributeError as e:
             _logger.error(e)
             return
-        except HTTPError as (e):
+        except HTTPError as e:
             _logger.error(e.code)
             return
-        except URLError as (e):
+        except URLError as e:
             _logger.error(e)
-        except Exception as (e):
+        except Exception as e:
             _logger.error(e)
         return
     type_results(results_all, results_all_typed)
@@ -391,7 +387,7 @@ def search_classiccars(search_name, results_all, results_all_typed):
         _logger.error(e)
     except URLError as e:
         _logger.error(e)
-    except Exception as (e):
+    except Exception as e:
         _logger.error(e)
 
 
