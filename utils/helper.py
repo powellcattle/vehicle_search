@@ -276,6 +276,7 @@ def search_oodle(search_name, results_all, results_all_typed):
     counter = 0
 
     html = OODLE_URL_START + year_search + OODLE_URL_END + price_search + '?' + order + '&' + distance
+
     req = Request(html, headers={'User-Agent': 'Mozilla/5.0'})
     html = urlopen(req)
 
@@ -356,6 +357,7 @@ def search_classiccars(search_name, results_all, results_all_typed):
                '&price-min=' + \
                str(search_filter.get('price_min')) + \
                '&private=true&ps=60&s=datelisted&sa=true'
+        print(html)
         req = Request(html, headers={'User-Agent': 'Mozilla/5.0'})
         html = urlopen(req)
         bs = BeautifulSoup(html, 'html.parser')
